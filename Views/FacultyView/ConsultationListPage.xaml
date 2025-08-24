@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"  
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"  
+             xmlns:local="clr-namespace:UM_Consultation_App_MAUI.Views.FacultyView"  
+             xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
+             x:Class="UM_Consultation_App_MAUI.Views.FacultyView.ConsultationListPage"
+             Title="">
+
+    <Page.Behaviors>
+        <mct:StatusBarBehavior StatusBarColor="#8c221e" />
+    </Page.Behaviors>
+
+    <VerticalStackLayout Padding="20" Spacing="20">
+        <!-- Title -->
+        <Label Text="Consulation List"  
+           FontSize="24"  
+           FontAttributes="Bold"  
+           TextColor="black"  
+           HorizontalOptions="Start" />
+
+        <Grid ColumnDefinitions="2*, 1" Padding="5">
+            <Label Text="Details"  
+               FontSize="16"  
+               FontAttributes="Bold"  
+               TextColor="Black"  
+               HorizontalOptions="Start" />
+
+            <Label Text="Status"  
+               FontSize="16"  
+               FontAttributes="Bold"  
+               TextColor="Black"  
+               HorizontalOptions="End"/>
+        </Grid>
+    </VerticalStackLayout>
+</ContentPage>

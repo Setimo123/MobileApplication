@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"  
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"  
+             xmlns:local="clr-namespace:UM_Consultation_App_MAUI.Views.FacultyView"  
+             xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
+             x:Class="UM_Consultation_App_MAUI.Views.FacultyView.RequestListPage"
+             Title="">
+
+    <Page.Behaviors>
+        <mct:StatusBarBehavior StatusBarColor="#8c221e" />
+    </Page.Behaviors>
+
+        <VerticalStackLayout Grid.Row="0" Padding="20" Spacing="20">
+            <!-- Title -->
+            <Label Text="Requests"  
+               FontSize="24"  
+               FontAttributes="Bold"  
+               TextColor="black"  
+               HorizontalOptions="Start" />
+
+            <Grid ColumnDefinitions="2*, 1" Padding="5">
+                <Label Text="Details"  
+                   FontSize="16"  
+                   FontAttributes="Bold"  
+                   TextColor="Black"  
+                   HorizontalOptions="Start" />
+
+                <Label Text="Action"  
+                   FontSize="16"  
+                   FontAttributes="Bold"  
+                   TextColor="Black"  
+                   HorizontalOptions="End"/>
+
+            </Grid>
+
+            <!-- Request List -->
+            <Border StrokeThickness="0"  
+                BackgroundColor="#EFEFEF"  
+                HeightRequest="80"  
+                WidthRequest="350"  
+                Padding="10">
+
+                <HorizontalStackLayout Spacing="15">
+
+                    <!-- Request Details -->
+                    <VerticalStackLayout>
+                        <!-- sample -->
+                        <Label Text="Request #7599"  
+                           FontSize="16"  
+                           FontAttributes="Bold"  
+                           TextColor="Black"/>
+
+                        <Label Text="CPE 223 - Jeanelle Labsan"  
+                           FontSize="14"  
+                           TextColor="Gray"/>
+
+                    </VerticalStackLayout>
+
+                    <!-- Action Buttons -->
+                    <HorizontalStackLayout Spacing="10" Margin="50,0,0,0">
+                        <ImageButton Source="checkicon.png"  
+                                 HeightRequest="45"  
+                                 WidthRequest="55"/>
+                        <ImageButton Source="dissaproveicon.png"  
+                                 HeightRequest="15"  
+                                 WidthRequest="15"/>
+                    </HorizontalStackLayout>
+
+                </HorizontalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+</ContentPage>

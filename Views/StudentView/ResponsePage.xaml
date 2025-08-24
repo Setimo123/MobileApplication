@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:UM_Consultation_App_MAUI.Views.StudentView" 
+             xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
+             x:Class="UM_Consultation_App_MAUI.Views.StudentView.ResponsePage"
+             Title="">
+
+    <Page.Behaviors>
+        <mct:StatusBarBehavior StatusBarColor="#8c221e" />
+    </Page.Behaviors>
+
+    <VerticalStackLayout Padding="20" Spacing="15">
+
+        <Label Text="Consultation Responses"
+               FontSize="24"
+               FontAttributes="Bold"
+               TextColor="Black"
+               HorizontalOptions="Center"/>
+
+
+        <Picker Title="All"
+                TitleColor="Black"
+                SelectedIndex="0"
+                BackgroundColor="#EFEFEF"
+                FontAttributes="Bold"
+                FontSize="18"
+                WidthRequest="50"
+                HeightRequest="50"
+                HorizontalOptions="Center">
+
+            <Picker.Items>
+                <x:String>First Semester 2024 - 2025</x:String>
+                <x:String>Second Semester 2024 - 2025</x:String>
+                <x:String>Summer Term 2025</x:String>
+            </Picker.Items>
+
+        </Picker>
+
+        <ListView ItemsSource="{Binding Responses}" HasUnevenRows="True" SeparatorVisibility="None">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Frame Margin="10"
+                       Padding="15"
+                       CornerRadius="12"
+                       BackgroundColor="#f4f4f4"
+                       HasShadow="True">
+                            <StackLayout Spacing="5">
+                                <Label Text="{Binding CourseCode}" 
+                               FontAttributes="Bold" 
+                               FontSize="18"
+                               TextColor="#333"/>
+                                <Label Text="{Binding Name}" FontSize="16"/>
+                                <Label Text="{Binding Date}" FontSize="14"/>
+                                <Label Text="{Binding Time}" FontSize="14"/>
+                                <Label Text="{Binding Status}" 
+                               TextColor="{Binding StatusColor}" 
+                               FontAttributes="Italic"
+                               FontSize="14"/>
+                            </StackLayout>
+                        </Frame>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+    </VerticalStackLayout>
+</ContentPage>

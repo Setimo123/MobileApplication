@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"  
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"  
+             xmlns:local="clr-namespace:UM_Consultation_App_MAUI.Views.StudentView"
+             xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
+             x:Class="UM_Consultation_App_MAUI.Views.StudentView.RequestPage"  
+             BackgroundColor="#ffffff"
+             Title="">
+
+    <Page.Behaviors>
+        <mct:StatusBarBehavior StatusBarColor="#8c221e" />
+    </Page.Behaviors>
+    <!--daghan restrictions/limitation but this is the best ive got-->  
+    <!--polish nalang kulang-->  
+     
+        <VerticalStackLayout Padding="20" Spacing="15">  
+            <!--walay combo box ang maui-->  
+            <Picker Title="Select Semester"  
+                TitleColor="Black"  
+                SelectedIndex="0"  
+                BackgroundColor="#EFEFEF"  
+                FontAttributes="Bold"  
+                FontSize="18"  
+                WidthRequest="350"  
+                HeightRequest="50"  
+                HorizontalOptions="Center">  
+
+                <Picker.Items>  
+                    <x:String>First Semester 2024 - 2025</x:String>  
+                    <x:String>Second Semester 2024 - 2025</x:String>  
+                    <x:String>Summer Term 2025</x:String>  
+                </Picker.Items>  
+
+            </Picker>  
+
+            <!-- Request Consultation Button -->  
+            <Button Text="Request Consultation"  
+                    BackgroundColor="#b61c1c"  
+                    TextColor="White"  
+                    FontSize="18"  
+                    CornerRadius="20"  
+                    HeightRequest="50"  
+                    WidthRequest="270"
+                    Command="{Binding RequestConsultationCommand}"/>  
+
+            <!-- Courses View -->  
+            <CollectionView ItemsSource="{Binding Requests}"  
+                Margin="10"  
+                SelectionMode="None">  
+                <CollectionView.Header>  
+                    <Grid Padding="10" ColumnSpacing="10">  
+                        <Grid.ColumnDefinitions>  
+                            <ColumnDefinition Width="2*"/>  
+                            <ColumnDefinition Width="2*"/>  
+                            <ColumnDefinition Width="3*"/>  
+                        </Grid.ColumnDefinitions>  
+
+                        <Label Text="Code" FontAttributes="Bold" />  
+                        <Label Text="Course" Grid.Column="1" FontAttributes="Bold" />  
+                        <Label Text="Instructor" Grid.Column="2" FontAttributes="Bold" />  
+                    </Grid>  
+                </CollectionView.Header>  
+
+                <CollectionView.ItemTemplate>  
+                    <DataTemplate>  
+                        <Grid Padding="10" ColumnSpacing="10">  
+                            <Grid.ColumnDefinitions>  
+                                <ColumnDefinition Width="2*"/>  
+                                <ColumnDefinition Width="2*"/>  
+                                <ColumnDefinition Width="3*"/>  
+                            </Grid.ColumnDefinitions>  
+
+                            <Label Text="{Binding Code}" />  
+                            <Label Text="{Binding Course}" Grid.Column="1" />  
+                            <Label Text="{Binding Instructor}" Grid.Column="2" />  
+                        </Grid>  
+                    </DataTemplate>  
+                </CollectionView.ItemTemplate>  
+            </CollectionView>  
+
+        </VerticalStackLayout>  
+</ContentPage>
