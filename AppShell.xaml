@@ -22,7 +22,7 @@
       ContentTemplate="{DataTemplate local:LoginPage}" />
 
     <!-- Student Navigation -->
-    <TabBar Route="Student">
+    <TabBar  Route="Student">
         <!--Home-->
         <ShellContent
             Title="Home"

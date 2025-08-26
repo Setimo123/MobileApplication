@@ -1,4 +1,5 @@
 ﻿using UM_Consultation_App_MAUI.Views;
+using UM_Consultation_App_MAUI.Views.FacultyView;
 using UM_Consultation_App_MAUI.Views.StudentView;
 
 namespace UM_Consultation_App_MAUI
@@ -18,6 +19,9 @@ namespace UM_Consultation_App_MAUI
             Routing.RegisterRoute("LogIn", typeof(LoginPage));
             Routing.RegisterRoute("HomePage", typeof(HomePage));
             Routing.RegisterRoute("RequestConsultationPage", typeof(RequestConsultationPage));
+
+            //For Faculty routing
+            //Routing.RegisterRoute("ConsultationListPage", typeof(ConsultationListPage));
 
         }
     }

@@ -89,6 +89,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\..\..\source\repos\MyDesktopProject\Consoltation.Repository\Consultation.Repository.csproj" />
+	  <ProjectReference Include="..\..\..\source\repos\MyDesktopProject\Consoltation.Services\Consultation.Services.csproj" />
+	  <ProjectReference Include="..\..\..\source\repos\MyDesktopProject\Consultation.Domain\Consultation.Domain.csproj" />
+	  <ProjectReference Include="..\..\..\source\repos\MyDesktopProject\Consultation.Infrastructure\Consultation.Infrastructure.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <MauiXaml Update="LoginPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

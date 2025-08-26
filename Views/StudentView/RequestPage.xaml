@@ -14,26 +14,28 @@
     <!--polish nalang kulang-->  
      
         <VerticalStackLayout Padding="20" Spacing="15">  
-            <!--walay combo box ang maui-->  
-            <Picker Title="Select Semester"  
+            <!--walay combo box ang maui-->
+        <Picker 
+                x:Name="SemesterPicker"
+                Title="Select Semester"  
                 TitleColor="Black"  
-                SelectedIndex="0"  
                 BackgroundColor="#EFEFEF"  
                 FontAttributes="Bold"  
                 FontSize="18"  
                 WidthRequest="350"  
                 HeightRequest="50"  
-                HorizontalOptions="Center">  
+                HorizontalOptions="Center"
+                ItemsSource="{Binding Enrolledsemseter}" 
+                SelectedItem="{Binding Selectedsemester}">
+        </Picker>
 
-                <Picker.Items>  
-                    <x:String>First Semester 2024 - 2025</x:String>  
-                    <x:String>Second Semester 2024 - 2025</x:String>  
-                    <x:String>Summer Term 2025</x:String>  
-                </Picker.Items>  
+        <!--<Picker.Items>
+            <x:String>First Semester 2024 - 2025</x:String>
+            <x:String>Second Semester 2024 - 2025</x:String>
+            <x:String>Summer Term 2025</x:String>
+        </Picker.Items>-->
 
-            </Picker>  
-
-            <!-- Request Consultation Button -->  
+        <!-- Request Consultation Button -->  
             <Button Text="Request Consultation"  
                     BackgroundColor="#b61c1c"  
                     TextColor="White"  
@@ -41,10 +43,10 @@
                     CornerRadius="20"  
                     HeightRequest="50"  
                     WidthRequest="270"
-                    Command="{Binding RequestConsultationCommand}"/>  
+                    Command="{Binding ConfirmRequestCommand}"/>  
 
-            <!-- Courses View -->  
-            <CollectionView ItemsSource="{Binding Requests}"  
+            <!-- Courses View --><!--
+            <CollectionView ItemsSource="{Binding Enrolledsemseter}"  
                 Margin="10"  
                 SelectionMode="None">  
                 <CollectionView.Header>  
@@ -76,7 +78,7 @@
                         </Grid>  
                     </DataTemplate>  
                 </CollectionView.ItemTemplate>  
-            </CollectionView>  
+            </CollectionView>-->  
 
         </VerticalStackLayout>  
 </ContentPage>

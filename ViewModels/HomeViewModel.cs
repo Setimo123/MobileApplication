@@ -34,8 +34,6 @@ namespace UM_Consultation_App_MAUI.ViewModels
         [ObservableProperty]
         private string pendingconsultation;
 
-
-
         public HomeViewModel(IAuthRepository userServices, IConsultationRequestServices consultationRequestServices)
         {
             _userServices = userServices;
@@ -62,8 +60,6 @@ namespace UM_Consultation_App_MAUI.ViewModels
         {
             List<string> fullname = MvvmHelper.stringSplitter(' ', studentInfo.StudentName);
 
-            //Use the LINQ for accessing the data in a list<string> 
-
             string firstNames = string.Empty;
             string lastName = fullname[fullname.Count-1];    
 
@@ -79,7 +75,6 @@ namespace UM_Consultation_App_MAUI.ViewModels
                 $"{studentInfo.SchoolYear.Year1}-{studentInfo.SchoolYear.Year2}";
 
             Useryearlevel = $"BS {studentInfo.Program.Description} {studentInfo.yearLevel.ToString()}";
-
         }
     }
 }

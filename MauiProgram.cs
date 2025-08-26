@@ -10,6 +10,8 @@ using UM_Consultation_App_MAUI.ViewModels;
 using Consultation.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using UM_Consultation_App_MAUI.Views.StudentView;
+using UM_Consultation_App_MAUI.Views.FacultyView;
+using UM_Consultation_App_MAUI.Views.Common;
 
 namespace UM_Consultation_App_MAUI
 {
@@ -49,12 +51,20 @@ namespace UM_Consultation_App_MAUI
             // ViewModels
             builder.Services.AddTransient<LoginViewModel>();
             builder.Services.AddTransient<HomeViewModel>();
+            builder.Services.AddTransient<MenuViewModel>();
+            builder.Services.AddTransient<RequestViewModel>();
+            builder.Services.AddTransient<ConsultationRequestViewModel>();
 
             //Common Pages
             builder.Services.AddTransient<LoginPage>();
+            //builder.Services.AddTransient<ConsultationListPage>();
 
             //Student Pages
             builder.Services.AddTransient<HomePage>();
+            builder.Services.AddTransient<MenuPage>();
+            builder.Services.AddTransient<RequestPage>();
+            builder.Services.AddTransient<RequestConsultationPage>();
+           
 
 
 

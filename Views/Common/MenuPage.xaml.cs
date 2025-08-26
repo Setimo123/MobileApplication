@@ -6,9 +6,10 @@ namespace UM_Consultation_App_MAUI.Views.Common;
 
 public partial class MenuPage : ContentPage
 {
-	public MenuPage()
+	public MenuPage(MenuViewModel mvm)
 	{
 		InitializeComponent();
+        BindingContext = mvm;
     }
     // Migration from Benny
     // feel free to modify this backend team

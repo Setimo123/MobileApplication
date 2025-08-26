@@ -9,7 +9,6 @@ namespace UM_Consultation_App_MAUI.ViewModels
 {
     public partial class LoginViewModel : ObservableObject
     {
-        private readonly INavigation _navigation;
         
         [ObservableProperty]
         private string email;
@@ -17,6 +16,8 @@ namespace UM_Consultation_App_MAUI.ViewModels
         [ObservableProperty]
         private string password;
 
+
+        //Constructor
         public LoginViewModel(IAuthService authService)
         {
             _authService = authService;
@@ -36,13 +37,13 @@ namespace UM_Consultation_App_MAUI.ViewModels
 
             if (studentUsers != null)
             {
-                await Shell.Current.GoToAsync("HomePage");
+                await Shell.Current.GoToAsync("//Student");
                 AccountVerification = true;
                 return;
             }
             else if (facultyUsers != null)
             {
-                await Shell.Current.GoToAsync("FacultyHomePage");
+                await Shell.Current.GoToAsync("ConsultationListPage");
                 AccountVerification = false;
                 return;
             }
@@ -51,7 +52,6 @@ namespace UM_Consultation_App_MAUI.ViewModels
                 App.Current.MainPage.DisplayAlert("Error Message", $"Navigation error: Invalid Credential", "OK");
                 return;
             }
-
         }
 
         //Read only types or the Interface caller
@@ -60,11 +60,8 @@ namespace UM_Consultation_App_MAUI.ViewModels
         //Statics function so all pages has the flexibility to access data that only needed
         public static Users studentUsers { get; set; } = new Users();
         public static Users facultyUsers { get; set; } = new Users();
-
         
         public static bool AccountVerification { get; set; }
         public string userUMIDNumber { get; set; }
-
-
     }
 }

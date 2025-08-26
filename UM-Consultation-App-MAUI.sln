@@ -5,6 +5,18 @@ VisualStudioVersion = 17.14.36203.30
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UM-Consultation-App-MAUI", "UM-Consultation-App-MAUI.csproj", "{F2023699-4C43-4815-BDB8-4BB5CE90D1AA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consultation.Services", "..\..\..\source\repos\MyDesktopProject\Consoltation.Services\Consultation.Services.csproj", "{0F86E335-6EFD-44A8-9841-3FD2EF430DDD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consultation.Repository", "..\..\..\source\repos\MyDesktopProject\Consoltation.Repository\Consultation.Repository.csproj", "{02736E53-D914-46A7-AB40-1C674B416559}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consultation.Infrastructure", "..\..\..\source\repos\MyDesktopProject\Consultation.Infrastructure\Consultation.Infrastructure.csproj", "{9237EC98-975E-425B-8EB4-81E1E6B36139}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consultation.Domain", "..\..\..\source\repos\MyDesktopProject\Consultation.Domain\Consultation.Domain.csproj", "{F08D95A3-D332-4BA2-81B0-4FDBB9D7D6EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consultation.Testing", "..\..\..\source\repos\MyDesktopProject\Consultation.Testing\Consultation.Testing.csproj", "{0FD0B7BA-4383-4295-B1E7-3E55F1FF6CB9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enum", "..\..\..\source\repos\MyDesktopProject\Enum\Enum.csproj", "{3A5E5BE5-30EC-4FDB-A114-43E16601F04C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,6 +29,30 @@ Global
 		{F2023699-4C43-4815-BDB8-4BB5CE90D1AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2023699-4C43-4815-BDB8-4BB5CE90D1AA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F2023699-4C43-4815-BDB8-4BB5CE90D1AA}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{0F86E335-6EFD-44A8-9841-3FD2EF430DDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F86E335-6EFD-44A8-9841-3FD2EF430DDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F86E335-6EFD-44A8-9841-3FD2EF430DDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F86E335-6EFD-44A8-9841-3FD2EF430DDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02736E53-D914-46A7-AB40-1C674B416559}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02736E53-D914-46A7-AB40-1C674B416559}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02736E53-D914-46A7-AB40-1C674B416559}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02736E53-D914-46A7-AB40-1C674B416559}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9237EC98-975E-425B-8EB4-81E1E6B36139}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9237EC98-975E-425B-8EB4-81E1E6B36139}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9237EC98-975E-425B-8EB4-81E1E6B36139}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9237EC98-975E-425B-8EB4-81E1E6B36139}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F08D95A3-D332-4BA2-81B0-4FDBB9D7D6EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F08D95A3-D332-4BA2-81B0-4FDBB9D7D6EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F08D95A3-D332-4BA2-81B0-4FDBB9D7D6EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F08D95A3-D332-4BA2-81B0-4FDBB9D7D6EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0FD0B7BA-4383-4295-B1E7-3E55F1FF6CB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0FD0B7BA-4383-4295-B1E7-3E55F1FF6CB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0FD0B7BA-4383-4295-B1E7-3E55F1FF6CB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0FD0B7BA-4383-4295-B1E7-3E55F1FF6CB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A5E5BE5-30EC-4FDB-A114-43E16601F04C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A5E5BE5-30EC-4FDB-A114-43E16601F04C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A5E5BE5-30EC-4FDB-A114-43E16601F04C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A5E5BE5-30EC-4FDB-A114-43E16601F04C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
