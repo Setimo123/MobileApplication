@@ -15,11 +15,13 @@
     Shell.FlyoutBehavior="Disabled"
     Title="UM_Consultation_App_MAUI">
 
-    <!--Login Navigation -->
+    <!-- Log-In Navigation-->
+
     <ShellContent
-      Title="Login"
-      Route="LoginPage"
-      ContentTemplate="{DataTemplate local:LoginPage}" />
+        Title="Login"
+        Route="LoginPage"
+        ContentTemplate="{DataTemplate local:LoginPage}" />
+
 
     <!-- Student Navigation -->
     <TabBar Route="Student">
@@ -78,5 +80,7 @@
         Title="Request Consultation"
         Route="RequestConsultationPage"
         ContentTemplate="{DataTemplate studentview:RequestConsultationPage}" />
+
+
 
 </Shell>

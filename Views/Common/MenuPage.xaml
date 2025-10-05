@@ -87,13 +87,13 @@
                                 </Grid.ColumnDefinitions>
 
                                 <Label Text="Name:" FontAttributes="Bold" Grid.Row="0" Grid.Column="0" />
-                                <Label Text="{Binding Name}" Grid.Row="0" Grid.Column="1" />
+                                <Label Text="{Binding Studentname}" Grid.Row="0" Grid.Column="1" />
 
                                 <Label Text="Email/Username:" FontAttributes="Bold" Grid.Row="1" Grid.Column="0" />
                                 <Label Text="{Binding Email}" Grid.Row="1" Grid.Column="1" />
 
-                                <Label Text="Password:" FontAttributes="Bold" Grid.Row="2" Grid.Column="0" />
-                                <Label Text="{Binding MaskedPassword}" Grid.Row="2" Grid.Column="1" />
+                                <Label Text="Course" FontAttributes="Bold" Grid.Row="2" Grid.Column="0" />
+                                <Label Text="{Binding Course}" Grid.Row="2" Grid.Column="1" />
                             </Grid>
 
                             <Button Text="Change Password"
@@ -109,7 +109,7 @@
                 <Button Text="Logout"
                         TextColor="White"
                         BackgroundColor="#D32F2F"
-                        Clicked="OnLogoutClicked"
+                        Command="{Binding LogoutButtonCommand}"
                         CornerRadius="10"
                         HorizontalOptions="Fill" />
             </VerticalStackLayout>

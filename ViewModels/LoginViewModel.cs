@@ -1,7 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Consultation.Domain;
+using Consultation.Service;
 using Consultation.Service.IService;
+using Consultation.Services.Service;
+using Consultation.Services.Service.IService;
 using System.Windows.Input;
 using UM_Consultation_App_MAUI.Views;
 
@@ -9,62 +12,101 @@ namespace UM_Consultation_App_MAUI.ViewModels
 {
     public partial class LoginViewModel : ObservableObject
     {
-        private readonly INavigation _navigation;
-        
+
         [ObservableProperty]
         private string email;
 
         [ObservableProperty]
         private string password;
 
-        public LoginViewModel(IAuthService authService)
+        [ObservableProperty]
+        private bool isPasswordHidden = true;
+
+        [ObservableProperty]
+        private string passwordhashed = "eyeclosed.png";
+
+
+        [RelayCommand]
+        private void TogglePasswordVisibility()
         {
-            _authService = authService;
+            IsPasswordHidden = !IsPasswordHidden;
+            UpdateIcon();
         }
 
-        public LoginViewModel()
+        private void UpdateIcon()
         {
-            userUMIDNumber = studentUsers.UMID; 
+            passwordhashed = IsPasswordHidden ? "eyeclosed.png" : "eyeopen.png";
         }
+
+        public LoginViewModel(IAuthService authService,IStudentServices studetnServices,
+            IFacultyServices facultyServices)
+        {
+            _facultyServices = facultyServices;
+            _authService = authService;
+            _studentServices = studetnServices;
+        }
+
 
         //Command for the log-in button
         [RelayCommand]
         private async Task ClickLogIn()
         {
-            studentUsers = await _authService.Login(Email, Password, "Student");
-            facultyUsers = await _authService.Login(Email, Password, "Faculty");
+            Users studentUsers = await _authService.Login(Email, Password, "Student");
+            Users facultyUsers = await _authService.Login(Email, Password, "Faculty");
 
             if (studentUsers != null)
             {
-                await Shell.Current.GoToAsync("HomePage");
+                await StudentInformation(studentUsers.UMID);
+                await Shell.Current.GoToAsync($"///Student");
                 AccountVerification = true;
                 return;
             }
             else if (facultyUsers != null)
             {
-                await Shell.Current.GoToAsync("FacultyHomePage");
+                await FacultyInformation(facultyUsers.UMID);
+                await Shell.Current.GoToAsync("///FacultyHomePage");
                 AccountVerification = false;
                 return;
             }
             else
             {
-                App.Current.MainPage.DisplayAlert("Error Message", $"Navigation error: Invalid Credential", "OK");
+                App.Current.MainPage.DisplayAlert("Message", $"Invalid Credential", "OK");
                 return;
             }
+        }
 
+        //Command to route the create account
+        [RelayCommand]
+        private async Task CreateAccountClick()
+        {
+            //Add role and phone number into the UI
+           //_authService.CreateAccount(Email,Password,);
+            await Shell.Current.GoToAsync("CreateAccountPage");
+        }
+
+
+
+        private async Task StudentInformation(string userUMIDNumber)
+        {
+            Student = await _studentServices.GetStudentInformation(userUMIDNumber);
+        }
+
+        private async Task FacultyInformation(string userUMIDNumber)
+        {
+            Faculty = await _facultyServices.GetFacultyInformation(userUMIDNumber);
         }
 
         //Read only types or the Interface caller
         private readonly IAuthService _authService;
 
-        //Statics function so all pages has the flexibility to access data that only needed
-        public static Users studentUsers { get; set; } = new Users();
-        public static Users facultyUsers { get; set; } = new Users();
+        private readonly IStudentServices _studentServices;
 
-        
+        private readonly IFacultyServices _facultyServices;
+
+        //Statics function so all pages has the flexibility to access data that only needed
+        public static Student Student { get; set; } = new Student();
+        public static Faculty Faculty { get; set; } = new Faculty();
         public static bool AccountVerification { get; set; }
         public string userUMIDNumber { get; set; }
-
-
     }
 }

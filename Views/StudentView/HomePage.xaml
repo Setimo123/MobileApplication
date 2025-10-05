@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"  
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"  
-             xmlns:local="clr-namespace:UM_Consultation_App_MAUI.Views.StudentView"  
+     
              xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
              x:Class="UM_Consultation_App_MAUI.Views.StudentView.HomePage"  
-             xmlns:shpvm ="clr-namespace:UM_Consultation_App_MAUI.ViewModels"
+              xmlns:shpvm ="clr-namespace:UM_Consultation_App_MAUI.Views.StudentView" 
              Background="#ffffff"
              Title="">
 
@@ -14,42 +14,42 @@
   
         <VerticalStackLayout  
             Padding="30,0"  
-            Spacing="10">  
+            Spacing="10">
 
-            <!-- User Information Section -->
-             <Label Text="{Binding Umid}"    
-               FontSize="35"  
-               Margin="0,60,0,0"  
-               TextColor="#a9141d"  
-               HorizontalOptions="Center"  
-               FontAttributes="Bold"/>
+        <!-- User Information Section -->
+        <Label Text="{Binding Umid}"    
+       FontSize="35"  
+       Margin="0,60,0,0"  
+       TextColor="#a9141d"  
+       HorizontalOptions="Center"  
+       FontAttributes="Bold"/>
 
-             <Label Text="{Binding Username}"  
-              TextColor="Black"  
-               FontSize="28"  
-               HorizontalOptions="Center"  
-               FontAttributes="Bold"/>
+        <Label Text="{Binding Studentname}"  
+      TextColor="Black"  
+       FontSize="28"  
+       HorizontalOptions="Center"  
+       FontAttributes="Bold"/>
 
         <Label Text="{Binding Useryearlevel}"  
-               TextColor="Black"
-               FontSize="20"  
-               HorizontalOptions="Center"  
-               FontAttributes="Bold"/>
+       TextColor="Black"
+       FontSize="20"  
+       HorizontalOptions="Center"  
+       FontAttributes="Bold"/>
 
         <Label Text="{Binding Schoolyear}" 
-               FontSize="20"  
-               TextColor="#f98800"  
-               HorizontalOptions="Center"  
-               FontAttributes="Bold"/>
+       FontSize="20"  
+       TextColor="#f98800"  
+       HorizontalOptions="Center"  
+       FontAttributes="Bold"/>
 
 
-        <!-- Pending Consultations -->  
-            <Frame Padding="10" Margin="30"   
+        <!-- Pending Consultations -->
+        <Frame Padding="10" Margin="30"   
                HorizontalOptions="Center"   
                HasShadow="True"  
                WidthRequest="280"  
-               BorderColor="White">  
-                <VerticalStackLayout>
+               BorderColor="White">
+            <VerticalStackLayout>
                 <Label Text="PENDING CONSULTATIONS"  
                        FontSize="Medium"  
                        HorizontalOptions="Center"  
@@ -59,11 +59,12 @@
                        FontSize="40"  
                        HorizontalOptions="Center"  
                        FontAttributes="Bold"  
-                       Margin="10,0,0,0"/>  
-                </VerticalStackLayout>  
-            </Frame>  
+                       Margin="10,0,0,0"/>
+            </VerticalStackLayout>
+        </Frame>
 
-            <!-- Notifications -->  
+
+        <!-- Notifications -->  
             <Frame Padding="10" Margin="10"   
                HorizontalOptions="Center"   
                HasShadow="True"  

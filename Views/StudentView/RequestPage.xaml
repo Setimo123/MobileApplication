@@ -16,6 +16,8 @@
         <VerticalStackLayout Padding="20" Spacing="15">  
             <!--walay combo box ang maui-->  
             <Picker Title="Select Semester"  
+                ItemsSource="{Binding SchoolYear}"
+                SelectedItem="{Binding SelectedSchoolYear, Mode= TwoWay}"
                 TitleColor="Black"  
                 SelectedIndex="0"  
                 BackgroundColor="#EFEFEF"  
@@ -24,13 +26,6 @@
                 WidthRequest="350"  
                 HeightRequest="50"  
                 HorizontalOptions="Center">  
-
-                <Picker.Items>  
-                    <x:String>First Semester 2024 - 2025</x:String>  
-                    <x:String>Second Semester 2024 - 2025</x:String>  
-                    <x:String>Summer Term 2025</x:String>  
-                </Picker.Items>  
-
             </Picker>  
 
             <!-- Request Consultation Button -->  
@@ -41,10 +36,12 @@
                     CornerRadius="20"  
                     HeightRequest="50"  
                     WidthRequest="270"
-                    Command="{Binding RequestConsultationCommand}"/>  
+                    Command="{Binding RequestConsultationClickCommand}"/>  
 
-            <!-- Courses View -->  
-            <CollectionView ItemsSource="{Binding Requests}"  
+            <!-- Courses View -->
+        <CollectionView 
+            ItemsSource="{Binding EnrolledCourselist}"  
+            SelectedItems="{Binding SelectedEnrolledCourses}"
                 Margin="10"  
                 SelectionMode="None">  
                 <CollectionView.Header>  
@@ -68,11 +65,11 @@
                                 <ColumnDefinition Width="2*"/>  
                                 <ColumnDefinition Width="2*"/>  
                                 <ColumnDefinition Width="3*"/>  
-                            </Grid.ColumnDefinitions>  
+                            </Grid.ColumnDefinitions>
 
-                            <Label Text="{Binding Code}" />  
-                            <Label Text="{Binding Course}" Grid.Column="1" />  
-                            <Label Text="{Binding Instructor}" Grid.Column="2" />  
+                            <Label Text="{Binding Coursecode}" />
+                            <Label Text="{Binding Coursename}" Grid.Column="1" />
+                            <Label Text="{Binding Instructorname}" Grid.Column="2" />  
                         </Grid>  
                     </DataTemplate>  
                 </CollectionView.ItemTemplate>  

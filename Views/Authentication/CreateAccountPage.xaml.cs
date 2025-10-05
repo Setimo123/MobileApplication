@@ -12,28 +12,7 @@ public partial class CreateAccountPage : ContentPage
     }
     // everything below kay Arobo
     // backend team feel free to modify
-    private async void BackToPreviousPage(object? sender, EventArgs e)
-    {
-        bool confirmExit = await DisplayAlert("Warning!", "You haven’t completed the form. Exit anyway?", "Yes", "No");
-
-        if (confirmExit)
-        {
-            txtboxEmail.Text = string.Empty;
-            txtboxPassword.Text = string.Empty;
-            txtboxConfirmPassword.Text = string.Empty;
-            btnPasswordEye.Source = "eyeclosed.png";
-            txtboxPassword.IsPassword = true;
-            btnConfirmPasswordEye.Source = "eyeclosed.png";
-            txtboxConfirmPassword.IsPassword = true;
-            lblPasswordMatch.IsVisible = false;
-            iconStatus.IsVisible = false;
-            lblPasswordMatch.IsVisible = false;
-            btnSignUp.BackgroundColor = Colors.LightPink;
-            btnSignUp.TextColor = Colors.White;
-            btnSignUp.IsEnabled = false;
-            //Pa-add sa show Login Page code...
-        }
-    }
+    
     private async void SignUpButton(object? sender, EventArgs e)
     {
         if (string.IsNullOrWhiteSpace(txtboxEmail.Text) || string.IsNullOrWhiteSpace(txtboxPassword.Text) || string.IsNullOrWhiteSpace(txtboxConfirmPassword.Text))
@@ -79,7 +58,7 @@ public partial class CreateAccountPage : ContentPage
                 lblPasswordMatch.Text = "Passwords match!";
                 lblPasswordMatch.TextColor = Colors.Green;
                 iconStatus.Source = "checkicon.png";
-                btnSignUp.BackgroundColor = Colors.Maroon;
+                btnSignUp.BackgroundColor = Color.FromArgb("#b61c1c");
                 btnSignUp.TextColor = Colors.White;
                 btnSignUp.IsEnabled = true;
             }

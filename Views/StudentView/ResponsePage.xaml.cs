@@ -4,9 +4,9 @@ namespace UM_Consultation_App_MAUI.Views.StudentView;
 
 public partial class ResponsePage : ContentPage
 {
-	public ResponsePage()
+	public ResponsePage(ResponseViewModel rvm)
 	{
 		InitializeComponent();
-		BindingContext = new ResponseViewModel();
+		BindingContext = rvm;
 	}
 }

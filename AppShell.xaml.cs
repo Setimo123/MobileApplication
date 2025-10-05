@@ -18,7 +18,6 @@ namespace UM_Consultation_App_MAUI
             Routing.RegisterRoute("LogIn", typeof(LoginPage));
             Routing.RegisterRoute("HomePage", typeof(HomePage));
             Routing.RegisterRoute("RequestConsultationPage", typeof(RequestConsultationPage));
-
         }
     }
 }

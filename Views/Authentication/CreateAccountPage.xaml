@@ -12,17 +12,7 @@
         <VerticalStackLayout
             Padding="30,0"
             Spacing="25">
-            <ImageButton
-                x:Name="btnBack"
-                Source="back_icon.svg"
-                BackgroundColor="Transparent"
-                WidthRequest="50"
-                HeightRequest="50"
-                Margin="-15,20,0,0"
-                HorizontalOptions="Start"
-                VerticalOptions="Center" 
-                Grid.Column="1"
-                Clicked="BackToPreviousPage"/>
+            
             <Image
                 Source="createaccount_image.png"
                 HeightRequest="185"
@@ -178,6 +168,10 @@
                     FontSize="15"
                     IsVisible="False"/>
             </HorizontalStackLayout>
+
+            <Picker Title="Choose Start Time"
+                 SelectedIndex="0"
+                 FontAttributes="Bold"></Picker>
 
             <Button
                 x:Name="btnSignUp"
