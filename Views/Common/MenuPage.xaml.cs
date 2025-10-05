@@ -5,10 +5,11 @@ using UM_Consultation_App_MAUI.Views.StudentView;
 namespace UM_Consultation_App_MAUI.Views.Common;
 
 public partial class MenuPage : ContentPage
-{
-	public MenuPage()
+{    
+	public MenuPage(MenuViewModel vm)
 	{
 		InitializeComponent();
+        BindingContext = vm;
     }
     // Migration from Benny
     // feel free to modify this backend team

@@ -74,7 +74,7 @@
                 <Entry 
                     x:Name="txtboxPassword" 
                     FontAttributes="Bold"
-                    IsPassword="True" 
+                    IsPassword="{Binding IsPasswordHidden}" 
                     Placeholder="Password"
                     Text="{Binding Password}"
                     BackgroundColor="Transparent" 
@@ -84,12 +84,12 @@
                     Visual="Default"/>
 
                 <ImageButton
-                    x:Name="btnPasswordEye" Source="eyeclosed.png"
+                    x:Name="btnPasswordEye" Source="{Binding Passwordhashed}"
+                    Command="{Binding TogglePasswordVisibilityCommand}"
                     BackgroundColor="Transparent" WidthRequest="25"
                     HeightRequest="25" HorizontalOptions="End"
                     VerticalOptions="Center" Grid.Column="2"
-                   />
-                <!-- Clicked="TogglePasswordVisibility" -->
+                    />
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -111,7 +111,7 @@
         <Button Text="Log In"
                 FontSize="18"
                 BackgroundColor="#b61c1c"
-                Command="{Binding ClickLogInCommand}"
+                Command ="{Binding ClickLogInCommand}"
                 TextColor="White"
                 CornerRadius="50"
                 HeightRequest="55"
@@ -120,7 +120,7 @@
         <!-- Create Account Button -->
         <Button Text="Create Account"
                 BackgroundColor="Transparent"
-                Command="{Binding CreateAccountCommand}"
+                Command="{Binding CreateAccountClickCommand}"
                 BorderColor="#b61c1c"
                 BorderWidth="2"
                 TextColor="#b61c1c"

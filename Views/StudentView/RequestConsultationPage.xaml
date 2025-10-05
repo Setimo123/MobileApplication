@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="UM_Consultation_App_MAUI.Views.StudentView.RequestConsultationPage"
              xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
              Title="Request Consultation">
@@ -9,15 +10,16 @@
         <mct:StatusBarBehavior StatusBarColor="#8c221e" />
     </Page.Behaviors>
 
+    <ScrollView Orientation="Vertical" HorizontalScrollBarVisibility="Always">
     <VerticalStackLayout Padding="30" Spacing="10">
-        <Label Text="549168"
+            <Label Text="{Binding Studentumid}"
                FontSize="30"
                FontAttributes="Bold"
                TextColor="#a9141d"
                Margin="0,20,0,0"
                HorizontalOptions="Center"/>
 
-        <Label Text="Naive, Allen Vincent"
+            <Label Text="{Binding Studentname}"
                FontSize="20"
                FontAttributes="Bold"
                TextColor="Black"
@@ -28,28 +30,33 @@
                FontSize="14"/>
 
         <Frame BorderColor="gray" CornerRadius="10" Padding="5" >
-            <Picker Title="Choose Course"
+            
+                <Picker Title="Choose Course" x:Name="CourseSelectPicker"
                     SelectedIndex="0"
-                    FontAttributes="Bold">
+                    FontAttributes="Bold"
+                    ItemsSource="{Binding AvailableCourses}"
+                    SelectedItem="{Binding Selectedcourses}"
+                    ItemDisplayBinding="{Binding CourseName}">
 
-                <Picker.Items>
-                    <x:String>UGE 2</x:String>
-                    <x:String>CEE 104</x:String>
-                    <x:String>CEE 101</x:String>
-                    <x:String>CPE 223</x:String>
-                </Picker.Items>
-
-            </Picker>
-        </Frame>
+                    <Picker.Behaviors>
+                        <toolkit:EventToCommandBehavior
+                            EventName="SelectedIndexChanged"
+                            Command="{Binding CourseCodeCommand}"
+                            CommandParameter="{Binding Source={x:Reference CourseSelectPicker}, Path= SelectedItem}" />
+                    </Picker.Behaviors>
+                </Picker>
+            </Frame>
 
         <Label Text="Course Code"
                FontSize="14"/>
 
         <Frame BorderColor="Gray" CornerRadius="10" Padding="5">
-            <Entry Placeholder="Enter Course Code"
+                <Entry Placeholder="Enter Course Code" MaxLength="20"
+                   IsReadOnly="True"
+                   Text="{Binding Coursecode}"   
                    FontAttributes="Bold"
                    Keyboard="Numeric"
-                   MaxLength="6"/>
+                   />
         </Frame>
 
         <Label Text="Course Instructor"
@@ -57,6 +64,8 @@
 
         <Frame BorderColor="Gray" CornerRadius="10" Padding="5">
             <Entry Placeholder="Enter Course Instructor"
+                   IsReadOnly="True"
+                   Text="{Binding Courseinstructor}"
                    FontAttributes="Bold"/>
         </Frame>
 
@@ -156,7 +165,9 @@
                     BackgroundColor="black"
                     TextColor="White"
                     FontAttributes="Bold"
+                    Command="{Binding BackNavigationCommand}"
                     CornerRadius="20"/>
         </HorizontalStackLayout>
     </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

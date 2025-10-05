@@ -10,7 +10,7 @@
         <mct:StatusBarBehavior StatusBarColor="#8c221e" />
     </Page.Behaviors>
 
-        <VerticalStackLayout Grid.Row="0" Padding="20" Spacing="20">
+        <VerticalStackLayout Grid.Row="0" Padding="20" >
             <!-- Title -->
             <Label Text="Requests"  
                FontSize="24"  
@@ -18,55 +18,54 @@
                TextColor="black"  
                HorizontalOptions="Start" />
 
-            <Grid ColumnDefinitions="2*, 1" Padding="5">
-                <Label Text="Details"  
-                   FontSize="16"  
-                   FontAttributes="Bold"  
-                   TextColor="Black"  
-                   HorizontalOptions="Start" />
+            <Frame BorderColor="Transparent">
+                <Grid ColumnDefinitions="195, 200" Padding="0">
+                    <Label Text="Details"  
+                       FontSize="16"  
+                       FontAttributes="Bold"  
+                       TextColor="Black"  
+                       HorizontalOptions="Center"
+                       Grid.Column="0"/>
 
-                <Label Text="Action"  
-                   FontSize="16"  
-                   FontAttributes="Bold"  
-                   TextColor="Black"  
-                   HorizontalOptions="End"/>
-
-            </Grid>
+                    <Label Text="Action"  
+                       FontSize="16"  
+                       FontAttributes="Bold"  
+                       TextColor="Black"  
+                       HorizontalOptions="Center"
+                       Grid.Column="1"/>
+                </Grid>
+            </Frame>
 
             <!-- Request List -->
             <Border StrokeThickness="0"  
-                BackgroundColor="#EFEFEF"  
-                HeightRequest="80"  
-                WidthRequest="350"  
-                Padding="10">
+                    BackgroundColor="Transparent"
+                    HeightRequest="580"  
+                    WidthRequest="380"  
+                    Padding="10">
 
-                <HorizontalStackLayout Spacing="15">
-
-                    <!-- Request Details -->
-                    <VerticalStackLayout>
-                        <!-- sample -->
-                        <Label Text="Request #7599"  
-                           FontSize="16"  
-                           FontAttributes="Bold"  
-                           TextColor="Black"/>
-
-                        <Label Text="CPE 223 - Jeanelle Labsan"  
-                           FontSize="14"  
-                           TextColor="Gray"/>
-
-                    </VerticalStackLayout>
-
-                    <!-- Action Buttons -->
-                    <HorizontalStackLayout Spacing="10" Margin="50,0,0,0">
-                        <ImageButton Source="checkicon.png"  
-                                 HeightRequest="45"  
-                                 WidthRequest="55"/>
-                        <ImageButton Source="dissaproveicon.png"  
-                                 HeightRequest="15"  
-                                 WidthRequest="15"/>
-                    </HorizontalStackLayout>
-
-                </HorizontalStackLayout>
+                <CollectionView ItemsSource="{Binding PendingRequests}" SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Padding="10" ColumnDefinitions="230,Auto,Auto">
+                                <StackLayout>
+                                    <Label Text="{Binding Id}" FontAttributes="Bold" HorizontalOptions="Center" Margin="0,0,40,2"/>
+                                    <Label Text="{Binding CourseCode}" FontAttributes="Bold" HorizontalOptions="Center" Margin="0,0,40,2" />
+                                    <Label Text="{Binding StudentName}" FontAttributes="Bold" FontSize="14" HorizontalOptions="Center" Margin="0,0,40,15"/>
+                                    <Label Text="{Binding Date}" FontSize="14" HorizontalOptions="Center" TextColor="#b63b43" Margin="0,0,40,0"/>
+                                    <Label Text="{Binding Time}" FontSize="14" HorizontalOptions="Center" TextColor="#b63b43" Margin="0,0,40,0"/>
+                                </StackLayout>
+                                    <Button Text="✔" Grid.Column="1" Command="{Binding Source={RelativeSource AncestorType={x:Type local:RequestListPage}},
+                                            Path=BindingContext.ApproveCommand}" CommandParameter="{Binding}"
+                                            Margin="10" TextColor="#3c9357" BackgroundColor="#eefdf3" CornerRadius="10"
+                                            HeightRequest="40" WidthRequest="40"/>
+                                    <Button Text="✖" Grid.Column="2" Command="{Binding Source={RelativeSource AncestorType={x:Type local:RequestListPage}},
+                                            Path=BindingContext.DisapproveCommand}" CommandParameter="{Binding}"
+                                            Margin="10" TextColor="#de3e43" BackgroundColor="#fdf2f2" CornerRadius="10"
+                                            HeightRequest="40" WidthRequest="40"/>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
             </Border>
         </VerticalStackLayout>
 </ContentPage>

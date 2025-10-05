@@ -20,6 +20,8 @@
 
 
         <Picker Title="All"
+                ItemsSource="{Binding Options}"
+                SelectedItem="{Binding SelectedSemster, Mode= TwoWay}"
                 TitleColor="Black"
                 SelectedIndex="0"
                 BackgroundColor="#EFEFEF"
@@ -28,13 +30,6 @@
                 WidthRequest="50"
                 HeightRequest="50"
                 HorizontalOptions="Center">
-
-            <Picker.Items>
-                <x:String>First Semester 2024 - 2025</x:String>
-                <x:String>Second Semester 2024 - 2025</x:String>
-                <x:String>Summer Term 2025</x:String>
-            </Picker.Items>
-
         </Picker>
 
         <ListView ItemsSource="{Binding Responses}" HasUnevenRows="True" SeparatorVisibility="None">
@@ -52,8 +47,9 @@
                                FontSize="18"
                                TextColor="#333"/>
                                 <Label Text="{Binding Name}" FontSize="16"/>
-                                <Label Text="{Binding Date}" FontSize="14"/>
-                                <Label Text="{Binding Time}" FontSize="14"/>
+                                <Label Text="{Binding DateStarted}" FontSize="14"/>
+                                <Label Text="{Binding DateEnded}" FontSize="14"/>
+                                <Label Text="{Binding Schedule}" FontSize="14"/>
                                 <Label Text="{Binding Status}" 
                                TextColor="{Binding StatusColor}" 
                                FontAttributes="Italic"

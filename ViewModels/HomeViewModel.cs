@@ -4,23 +4,23 @@ using Consultation.Domain.Enum;
 using Consultation.Repository.Repository.IRepository;
 using Consultation.Service;
 using Consultation.Service.IService;
+using Consultation.Services.Service.IService;
 using Enum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UM_Consultation_App_MAUI.Helper;
+using UM_Consultation_App_MAUI.MvvmHelper;
+
 
 namespace UM_Consultation_App_MAUI.ViewModels
 {
     public partial class HomeViewModel : ObservableObject
     {
-        private readonly IAuthRepository _userServices;
-        private readonly IConsultationRequestServices _consultationRequestServices;
 
         [ObservableProperty]
-        private string username;
+        private string studentname;
 
         [ObservableProperty]
         private string umid;
@@ -35,50 +35,55 @@ namespace UM_Consultation_App_MAUI.ViewModels
         private string pendingconsultation;
 
 
-
-        public HomeViewModel(IAuthRepository userServices, IConsultationRequestServices consultationRequestServices)
+        public HomeViewModel()
         {
-            _userServices = userServices;
-            _consultationRequestServices = consultationRequestServices;
             DisplayStudentUserInformation();
         }
+
         private async void DisplayStudentUserInformation()
         {
-            Student studentInfo = await _userServices.GetStudentInformation(new LoginViewModel().userUMIDNumber);
-            List<ConsultationRequest> consultationStatus = await _consultationRequestServices.GetStudentPendingList(studentInfo.StudentUMID, Status.Pending);
-            if (studentInfo == null)
+            try
             {
-                Username = "No name";
-                return;
-            }
-       
-            UserInformation(studentInfo);
+                Student StudentInfo = LoginViewModel.Student;
+                if (StudentInfo == null)
+                {
+                    Studentname = "No name";
+                    return;
+                }
 
-            Pendingconsultation = consultationStatus.Where(c => c.Status == Status.Pending).Count().ToString();
-  
+                UserInformation(StudentInfo);
+                Pendingconsultation = StudentInfo.ConsultationRequests.Where(c => c.Status  == Status.Pending).Count().ToString();
+                Helper.DisplayMessage($"{studentname}");
+
+            }
+            catch (Exception ex)
+            {
+                Helper.DisplayMessage($"{ex.Message}");
+            }
         }
+
 
         private void UserInformation(Student studentInfo)
         {
-            List<string> fullname = MvvmHelper.stringSplitter(' ', studentInfo.StudentName);
+            List<string> fullname = Helper.StringSplitter(' ', studentInfo.StudentName);
 
             //Use the LINQ for accessing the data in a list<string> 
 
             string firstNames = string.Empty;
-            string lastName = fullname[fullname.Count-1];    
+            string lastName = fullname[fullname.Count - 1];
 
             for (int i = 0; i < fullname.Count - 1; i++)
             {
                 firstNames += fullname[i] + " ";
             }
 
-            Username = $"{lastName},{firstNames.TrimEnd()}";    
+            Studentname = $"{lastName},{firstNames.TrimEnd()}";
 
             Umid = studentInfo.StudentUMID;
-            Schoolyear = $"{MvvmHelper.GetDisplayName(studentInfo.SchoolYear.Semester)} " +
+            Schoolyear = $"{Helper.GetSemesterName(studentInfo.SchoolYear.Semester)} " +
                 $"{studentInfo.SchoolYear.Year1}-{studentInfo.SchoolYear.Year2}";
 
-            Useryearlevel = $"BS {studentInfo.Program.Description} {studentInfo.yearLevel.ToString()}";
+            Useryearlevel = $"BS {studentInfo.Program.Description}" + $"{Helper.GetYearLevelName(studentInfo.yearLevel)}";
 
         }
     }
