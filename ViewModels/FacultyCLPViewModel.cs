@@ -12,17 +12,15 @@ namespace UM_Consultation_App_MAUI.ViewModels
 {
     public partial class FacultyCLPViewModel : ObservableObject
     {
-        public ObservableCollection<Consultations> ConsultationsList = new ObservableCollection<Consultations>();
-        private readonly IFacultyServices _faculty;
+        public ObservableCollection<Consultations> ConsultationsList { get; set; } = new ObservableCollection<Consultations>();
+        private readonly IFacultyRepository _faculty;
 
-        public FacultyCLPViewModel(IFacultyServices faculty)
+        public FacultyCLPViewModel(IFacultyRepository faculty)
         {
             _faculty = faculty;
             DisplayConsultation();
 
-            MvvmHelper.Helper.DisplayMessage("No Consultation List");
         }
-
 
         private async void DisplayConsultation()
         {
@@ -33,15 +31,16 @@ namespace UM_Consultation_App_MAUI.ViewModels
                 MvvmHelper.Helper.DisplayMessage("No Consultation List");
                 return;
             }
-            foreach (var x in facultyConsultation)
+            foreach (var x in facultyConsultation.Where(fc => fc.Status != Consultation.Domain.Enum.Status.Upcoming))
             {
                 ConsultationsList.Add(new Consultations
                     (
-                    x.ConsultationID.ToString(),
-                    x.SubjectCode,
-                    x.DateSchedule.ToString("MM/dd/yyyy"),
-                    x.StartedTime.ToString("hh:mm tt") + " - " + x.EndedTime.ToString("hh:mm tt"),
-                    x.Status.ToString())
+                    $"{x.ConsultationID.ToString()}",
+                    $"{x.SubjectCode}",
+                    $"{x.DateSchedule.ToString("MM/dd/yyyy")}",
+                    $"{x.StartedTime.ToString("hh:mm tt") + " - " + x.EndedTime.ToString("hh:mm tt")}",
+                    $"{x.Status.ToString()}",
+                    $"{x.Student.StudentName}")
                     );
             }
         }
@@ -62,19 +61,22 @@ namespace UM_Consultation_App_MAUI.ViewModels
         private string time;
 
         [ObservableProperty]
+        private string studentname;
+
+        [ObservableProperty]
         private Color statusColor;
 
         [ObservableProperty]
         private string status;
 
-        public Consultations(string id, string coursecode, string date, string time, string status)
+        public Consultations(string id, string coursecode, string date, string time, string status, string studentname)
         {
-            this.id = id;
-            this.coursecode = coursecode;
-            this.date = date;
-            this.time = time;
-            this.status = status;
-        
+            Id = id;
+            Coursecode = coursecode;
+            Date = date;
+            Time = time;
+            Status = status;
+            Studentname = studentname;
         }
     }
 

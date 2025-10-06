@@ -61,7 +61,7 @@ namespace UM_Consultation_App_MAUI
             builder.Services.AddTransient<IAuthService, AuthService>();
             builder.Services.AddTransient<IConsultationRequestServices, ConsultationRequestServices>();
             builder.Services.AddTransient<IStudentServices, StudentServices>();
-            builder.Services.AddTransient<Consultation.Repository.Repository.IRepository.IFacultyServices, FacultyRepository>();
+            builder.Services.AddTransient<Consultation.Repository.Repository.IRepository.IFacultyRepository, FacultyRepository>();
             builder.Services.AddTransient<Consultation.Services.Service.IService.IFacultyServices, FacultyServices>();
 
             // Password Hasher

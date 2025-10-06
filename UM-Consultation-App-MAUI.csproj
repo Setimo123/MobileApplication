@@ -92,14 +92,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\MobileDatabase\MobileDatabase\Consoltation.Repository\Consultation.Repository.csproj" />
-	  <ProjectReference Include="..\..\MobileDatabase\MobileDatabase\Consoltation.Services\Consultation.Services.csproj" />
-	  <ProjectReference Include="..\..\MobileDatabase\MobileDatabase\Consultation.Domain\Consultation.Domain.csproj" />
-	  <ProjectReference Include="..\..\MobileDatabase\MobileDatabase\Consultation.Infrastructure\Consultation.Infrastructure.csproj" />
-	  <ProjectReference Include="..\..\MobileDatabase\MobileDatabase\Enum\Enum.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <MauiXaml Update="LoginPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -137,6 +129,14 @@
 
 	<ItemGroup>
 	  <Folder Include="NotificationHub\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\MobileDatabase_Github\Consoltation.Repository\Consultation.Repository.csproj" />
+	  <ProjectReference Include="..\MobileDatabase_Github\Consoltation.Services\Consultation.Services.csproj" />
+	  <ProjectReference Include="..\MobileDatabase_Github\Consultation.Domain\Consultation.Domain.csproj" />
+	  <ProjectReference Include="..\MobileDatabase_Github\Consultation.Infrastructure\Consultation.Infrastructure.csproj" />
+	  <ProjectReference Include="..\MobileDatabase_Github\Enum\Enum.csproj" />
 	</ItemGroup>
 
 </Project>

@@ -1,4 +1,5 @@
-﻿using Consultation.Domain;
+﻿
+using Consultation.Domain;
 using Consultation.Domain.Enum;
 using Enum;
 using System;
@@ -48,5 +49,13 @@ namespace UM_Consultation_App_MAUI.MvvmHelper
 
             return wordSplit;
         }
+
+
+
+        public async static Task<bool> DisplayOption(string message,string FirstOption,string SecondOption)
+        {
+            bool ChosenOption = await App.Current.MainPage.DisplayAlert("Mobile Message", message, FirstOption, SecondOption);
+            return ChosenOption;
+        } 
     }
 }

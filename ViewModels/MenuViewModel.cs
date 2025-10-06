@@ -37,7 +37,7 @@ namespace UM_Consultation_App_MAUI.ViewModels
             Student student = LoginViewModel.Student;
             Faculty faculty = LoginViewModel.Faculty;
 
-            if (student == null && faculty == null) return;
+            if (student == null || faculty == null) return;
 
             if (LoginViewModel.AccountVerification == true)
             {
@@ -49,8 +49,8 @@ namespace UM_Consultation_App_MAUI.ViewModels
             if (LoginViewModel.AccountVerification == false)
             {
                 Studentname = faculty.FacultyName;
-                Email = "";
-                Course = "";
+                Email = faculty.FacultyEmail;
+                Course = faculty.Program.Description;
                 return;
             }
         }
