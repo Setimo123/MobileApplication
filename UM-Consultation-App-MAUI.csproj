@@ -45,8 +45,8 @@
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</MauiSplashScreen>
 
-		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#000000" BaseSize="128,128" />
+		<!-- Splash Screen <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#000000" BaseSize="128,128" />-->
+
 
 
 		<!-- Images -->
