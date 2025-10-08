@@ -20,6 +20,9 @@ using Shiny;
 using Microsoft.Maui.Hosting;
 using Microsoft.Maui.Controls.Hosting;
 using Shiny.Infrastructure;
+using UM_Consultation_App_MAUI.MvvmHelper.Interface;
+using UM_Consultation_App_MAUI.MvvmHelper;
+using Microsoft.Extensions.DependencyInjection;
 
 
 namespace UM_Consultation_App_MAUI
@@ -31,12 +34,12 @@ namespace UM_Consultation_App_MAUI
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();
-            builder.UseMauiApp<App>()
+            builder.UseMauiApp<App>().UseMauiCommunityToolkit()
                 .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-            }).UseMauiCommunityToolkit();
+            });
 
             builder.Services.AddDbContext<AppDbContext>(opt =>
             {
@@ -61,8 +64,12 @@ namespace UM_Consultation_App_MAUI
             builder.Services.AddTransient<IAuthService, AuthService>();
             builder.Services.AddTransient<IConsultationRequestServices, ConsultationRequestServices>();
             builder.Services.AddTransient<IStudentServices, StudentServices>();
-            builder.Services.AddTransient<Consultation.Repository.Repository.IRepository.IFacultyServices, FacultyRepository>();
+            builder.Services.AddTransient<Consultation.Repository.Repository.IRepository.IFacultyRepository, FacultyRepository>();
             builder.Services.AddTransient<Consultation.Services.Service.IService.IFacultyServices, FacultyServices>();
+            builder.Services.AddSingleton<ILoadingServices, LoadingServices>();
+            builder.Services.AddIdentityCore<Consultation.Domain.Users>()
+                          .AddRoles<IdentityRole>()
+                         .AddEntityFrameworkStores<AppDbContext>();
 
             // Password Hasher
             builder.Services.AddSingleton<IPasswordHasher<Users>, PasswordHasher<Users>>();
@@ -83,6 +90,7 @@ namespace UM_Consultation_App_MAUI
             builder.Services.AddTransient<LoginPage>();
             builder.Services.AddTransient<MenuPage>();
             builder.Services.AddTransient<CreateAccountPage>();
+            builder.Services.AddTransient<ChangePassword>();
 
 
             //Student Pages

@@ -29,6 +29,9 @@ namespace UM_Consultation_App_MAUI.ViewModels
         private string schoolyear;
 
         [ObservableProperty]
+        private string program;
+
+        [ObservableProperty]
         private string useryearlevel;
 
         [ObservableProperty]
@@ -52,8 +55,9 @@ namespace UM_Consultation_App_MAUI.ViewModels
                 }
 
                 UserInformation(StudentInfo);
-                Pendingconsultation = StudentInfo.ConsultationRequests.Where(c => c.Status  == Status.Pending).Count().ToString();
-                Helper.DisplayMessage($"{studentname}");
+                Pendingconsultation = StudentInfo.
+                                      ConsultationRequests.
+                                      Where(c => c.Status  == Status.Pending).Count().ToString();
 
             }
             catch (Exception ex)
@@ -83,8 +87,8 @@ namespace UM_Consultation_App_MAUI.ViewModels
             Schoolyear = $"{Helper.GetSemesterName(studentInfo.SchoolYear.Semester)} " +
                 $"{studentInfo.SchoolYear.Year1}-{studentInfo.SchoolYear.Year2}";
 
-            Useryearlevel = $"BS {studentInfo.Program.Description}" + $"{Helper.GetYearLevelName(studentInfo.yearLevel)}";
-
+            Useryearlevel = $"{Helper.GetYearLevelName(studentInfo.yearLevel)} Bachelors of ";
+            Program = $"{studentInfo.Program.Description}";
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Maui.Views;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Consultation.Domain;
 using Consultation.Service;
@@ -10,16 +11,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UM_Consultation_App_MAUI.MvvmHelper.Interface;
 
 namespace UM_Consultation_App_MAUI.ViewModels
 {
     public partial class MenuViewModel : ObservableObject
     {
-
-        public MenuViewModel()
-        {
-            DisplayStudentInformation();
-        }
 
         [ObservableProperty]
         private string studentname;
@@ -31,17 +28,27 @@ namespace UM_Consultation_App_MAUI.ViewModels
         [ObservableProperty]
         private string email;
 
+        private readonly IAuthService _authService;
+        private readonly ILoadingServices _loadingScreen;
+        public static string UmId { get; set; }
+
+        public MenuViewModel(IAuthService authService, ILoadingServices loadingScreen)
+        {
+            DisplayStudentInformation();
+            _authService = authService;
+            _loadingScreen = loadingScreen;
+        }
 
        private async void DisplayStudentInformation()
        {
             Student student = LoginViewModel.Student;
             Faculty faculty = LoginViewModel.Faculty;
-
-            if (student == null && faculty == null) return;
+            if (student == null || faculty == null) return;
 
             if (LoginViewModel.AccountVerification == true)
             {
                 Studentname = student.StudentName;
+                UmId = student.StudentUMID;
                 Email = student.Email;
                 Course = student.Program.Description;
                 return;
@@ -49,10 +56,18 @@ namespace UM_Consultation_App_MAUI.ViewModels
             if (LoginViewModel.AccountVerification == false)
             {
                 Studentname = faculty.FacultyName;
-                Email = "";
-                Course = "";
+                UmId = faculty.FacultyUMID;
+                Email = faculty.FacultyEmail;
+                Course = faculty.Program.Description;
                 return;
             }
+        }
+
+        [RelayCommand]
+        private async Task ChangePassword()
+        {
+            var popup = new Views.Common.ChangePassword(_authService); 
+            var result = await Application.Current.MainPage.ShowPopupAsync(popup); 
         }
 
         [RelayCommand]

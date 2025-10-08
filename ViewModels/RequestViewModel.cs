@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using UM_Consultation_App_MAUI.MvvmHelper;
+using UM_Consultation_App_MAUI.MvvmHelper.Interface;
 using UM_Consultation_App_MAUI.Views.StudentView;
 
 namespace UM_Consultation_App_MAUI.ViewModels
@@ -21,6 +22,8 @@ namespace UM_Consultation_App_MAUI.ViewModels
         //List to add the data from the database
         public ObservableCollection<StudentEnrolledCourses> EnrolledCourselist { get; } = new ObservableCollection<StudentEnrolledCourses>();
         public ObservableCollection<string> SchoolYear {  get; } = new ObservableCollection<string>();
+
+        private readonly ILoadingServices _loadingScreen;
 
 
         //Code for the selected Item.
@@ -35,10 +38,12 @@ namespace UM_Consultation_App_MAUI.ViewModels
 
         public static string SelectedStudentSchoolYear = string.Empty;
 
-        public RequestViewModel(IAuthService authService,IStudentServices studentServices)
+        public RequestViewModel(IAuthService authService,IStudentServices studentServices,
+            ILoadingServices loadingScreen)
         {
             _authService = authService;
             _studentServices = studentServices;
+            _loadingScreen = loadingScreen;
             DisplayEnrolledCourses();
         }
 
@@ -67,8 +72,6 @@ namespace UM_Consultation_App_MAUI.ViewModels
                             $" {y.SchoolYear.Year1} - {y.SchoolYear.Year2}";
                         SchoolYear.Add(ComboBoxFormat);
                     }
-                  
-
                 }
 
             }
@@ -83,29 +86,37 @@ namespace UM_Consultation_App_MAUI.ViewModels
         private async Task RequestConsultationClick()
         {
             //Condition if the user does not select a semester
-            if (string.IsNullOrEmpty(SelectedSchoolYear))
+            try
             {
-                MvvmHelper.Helper.DisplayMessage($"Please Select a Semester");
-                return;
+                _loadingScreen.Show();
+                await Task.Delay(1000);
+                if (string.IsNullOrEmpty(SelectedSchoolYear))
+                {
+                    MvvmHelper.Helper.DisplayMessage($"Please Select a Semester");
+                    return;
+                }
+                string value = $"{SelectedSchoolYear.Split(' ')[0]} {SelectedSchoolYear.Split(' ')[1]}";
+                switch (value)
+                {
+                    case "First Semester":
+                        Semester = Consultation.Domain.Enum.Semester.Semester1;
+                        break;
+
+                    case "Second Semester":
+                        Semester = Consultation.Domain.Enum.Semester.Semester2;
+                        break;
+
+                    case "Summer Semester":
+                        Semester = Consultation.Domain.Enum.Semester.Summer;
+                        break;
+                }
+                //Route the shell based on the semester
+                await Shell.Current.GoToAsync($"//RequestConsultationPage?Semester={Semester}");
             }
-            string value = $"{SelectedSchoolYear.Split(' ')[0]} {SelectedSchoolYear.Split(' ')[1]}";
-            switch (value)
+            finally
             {
-                case "First Semester":
-                    Semester = Consultation.Domain.Enum.Semester.Semester1;
-                    break;
-
-                case "Second Semester":
-                    Semester = Consultation.Domain.Enum.Semester.Semester2;
-                    break;
-
-                case "Summer Semester":
-                    Semester = Consultation.Domain.Enum.Semester.Summer;
-                    break;
-
+                _loadingScreen.Hide();
             }
-            //Route the shell based on the semester
-            await Shell.Current.GoToAsync($"//RequestConsultationPage?Semester={Semester}");
         }
 
         //Interface Call (Optional)

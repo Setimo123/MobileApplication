@@ -36,6 +36,12 @@
        HorizontalOptions="Center"  
        FontAttributes="Bold"/>
 
+        <Label Text="{Binding Program}"  
+        TextColor="Black"
+        FontSize="20"  
+        HorizontalOptions="Center"  
+        FontAttributes="Bold"/>
+
         <Label Text="{Binding Schoolyear}" 
        FontSize="20"  
        TextColor="#f98800"  
