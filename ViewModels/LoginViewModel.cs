@@ -7,6 +7,7 @@ using Consultation.Services.Service;
 using Consultation.Services.Service.IService;
 using System.Windows.Input;
 using UM_Consultation_App_MAUI.Views;
+using UM_Consultation_App_MAUI.MvvmHelper.Interface;
 
 namespace UM_Consultation_App_MAUI.ViewModels
 {
@@ -25,6 +26,10 @@ namespace UM_Consultation_App_MAUI.ViewModels
         [ObservableProperty]
         private string passwordhashed = "eyeclosed.png";
 
+        [ObservableProperty]
+        private bool isBusy;
+
+
 
         [RelayCommand]
         private void TogglePasswordVisibility()
@@ -39,8 +44,9 @@ namespace UM_Consultation_App_MAUI.ViewModels
         }
 
         public LoginViewModel(IAuthService authService,IStudentServices studetnServices,
-            IFacultyServices facultyServices)
+            IFacultyServices facultyServices, ILoadingServices loadingScreen)
         {
+            _loadingScreen = loadingScreen;
             _facultyServices = facultyServices;
             _authService = authService;
             _studentServices = studetnServices;
@@ -51,27 +57,39 @@ namespace UM_Consultation_App_MAUI.ViewModels
         [RelayCommand]
         private async Task ClickLogIn()
         {
-            Users studentUsers = await _authService.Login(Email, Password, "Student");
-            Users facultyUsers = await _authService.Login(Email, Password, "Faculty");
+            try
+            {
+                _loadingScreen.Show();
+                await Task.Delay(1000);
 
-            if (studentUsers != null)
-            {
-                await StudentInformation(studentUsers.UMID);
-                await Shell.Current.GoToAsync($"///Student");
-                AccountVerification = true;
-                return;
+                Users studentUsers = await _authService.Login(Email, Password, "Student");
+                Users facultyUsers = await _authService.Login(Email, Password, "Faculty");
+
+                if (studentUsers != null)   
+                {
+
+                    await StudentInformation(studentUsers.UMID);
+                    await Shell.Current.GoToAsync($"///Student");
+                    AccountVerification = true;
+                    return;
+                }
+                else if (facultyUsers != null)
+                {
+                    await FacultyInformation(facultyUsers.UMID);
+                    await Shell.Current.GoToAsync("///FacultyHomePage");
+                    AccountVerification = false;
+                    return;
+                }
+                else
+                {
+                    _loadingScreen.Hide();
+                    App.Current.MainPage.DisplayAlert("Message", $"Invalid Credential", "OK");
+                    return;
+                }
             }
-            else if (facultyUsers != null)
+            finally
             {
-                await FacultyInformation(facultyUsers.UMID);
-                await Shell.Current.GoToAsync("///FacultyHomePage");
-                AccountVerification = false;
-                return;
-            }
-            else
-            {
-                App.Current.MainPage.DisplayAlert("Message", $"Invalid Credential", "OK");
-                return;
+                _loadingScreen.Hide();
             }
         }
 
@@ -79,12 +97,9 @@ namespace UM_Consultation_App_MAUI.ViewModels
         [RelayCommand]
         private async Task CreateAccountClick()
         {
-            //Add role and phone number into the UI
-           //_authService.CreateAccount(Email,Password,);
+
             await Shell.Current.GoToAsync("CreateAccountPage");
         }
-
-
 
         private async Task StudentInformation(string userUMIDNumber)
         {
@@ -108,5 +123,7 @@ namespace UM_Consultation_App_MAUI.ViewModels
         public static Faculty Faculty { get; set; } = new Faculty();
         public static bool AccountVerification { get; set; }
         public string userUMIDNumber { get; set; }
+
+        private readonly ILoadingServices _loadingScreen;
     }
 }

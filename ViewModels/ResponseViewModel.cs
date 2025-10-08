@@ -54,20 +54,7 @@ namespace UM_Consultation_App_MAUI.ViewModels
                 Responses.Add(
                     new Response(i.ConsultationID,i.SubjectCode,i.Student.StudentName,i.StartedTime.ToString()
                     ,i.EndedTime.ToString(),i.DateSchedule.ToString(),i.Status.ToString()));
-            }
-
-          
-        }
-
-        private async Task SortConsultation()
-        {
-            //Condition if the user does not select a semester
-            if (string.IsNullOrEmpty(SelectedSemester))
-            {
-                MvvmHelper.Helper.DisplayMessage($"Please Select a Semester");
-                return;
-            }
-
+            } 
         }
      }
     

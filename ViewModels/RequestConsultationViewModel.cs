@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using UM_Consultation_App_MAUI.MvvmHelper.Interface;
 
 namespace UM_Consultation_App_MAUI.ViewModels
 {
@@ -41,10 +42,13 @@ namespace UM_Consultation_App_MAUI.ViewModels
         private string selectedcourses;
 
         public ObservableCollection<StudentEnrolledCourses> AvailableCourses { get; } = new ObservableCollection<StudentEnrolledCourses>();
-
-        public RequestConsultationViewModel(IStudentServices studetnServices)
+        private readonly ILoadingServices _loadingScreen;
+        public RequestConsultationViewModel(IStudentServices studetnServices,
+            IConsultationRequestServices consultationRequestServices, ILoadingServices loadingservices)
         {
+            _consultationRequestServices = consultationRequestServices;
             _studentServices = studetnServices;
+            _loadingScreen = loadingservices;
             DisplayUserInformationOption();
             DispalyUserInformation();
         }
@@ -90,6 +94,7 @@ namespace UM_Consultation_App_MAUI.ViewModels
                 {
                     Courseinstructor = courses.Faculty?.FacultyName;
                     Coursecode = courses.CourseCode;
+                  
                 }
         }
        );
@@ -97,14 +102,41 @@ namespace UM_Consultation_App_MAUI.ViewModels
         [RelayCommand]
         public async Task FileConsultationClick()
         {
-            //Student studentInfo = LoginViewModel.Student.en
-            //Add the consultation into the database    
-            using (var context = new AppDbContext())
+            try
             {
-               //add the synthax here for adding to the ConsultationDatabase
+                _loadingScreen.Show();
+                await Task.Delay(1000);
+                //if (string.IsNullOrWhiteSpace(studentname)
+                //    || string.IsNullOrWhiteSpace(courseinstructor)
+                //    || string.IsNullOrWhiteSpace(starttime)
+                //    || string.IsNullOrWhiteSpace(endtime)
+                //    || string.IsNullOrWhiteSpace(selectedcourses))
+                //{
+                //    await _consultationRequestServices.AddConsultation(
+                //        StudentInfo.StudentID,
+                //        Coursecode,
+                //        DateTime.Now,
+                //        TimeSpan.Parse(Starttime),
+                //        TimeSpan.Parse(Endtime),
+                //        Consultation.Domain.Enum.Status.Upcoming,
+                //        string.Empty);
+                //    MvvmHelper.Helper.DisplayMessage("Successfully Added Consultation Request");
+                //    AvailableCourses.Clear();
+                //}
+                //else
+                //{
+                //    MvvmHelper.Helper.DisplayMessage("Please fill in all the fields");
+                //}
 
-                //Try to send a message for the MAUI.
             }
+            finally
+            {
+                _loadingScreen.Hide();
+            }
+
+
+            MvvmHelper.Helper.DisplayMessage("This feature is under development");  
+
         }
 
         [RelayCommand]
@@ -116,6 +148,7 @@ namespace UM_Consultation_App_MAUI.ViewModels
 
         private readonly Student StudentInfo = LoginViewModel.Student;
         private readonly IStudentServices _studentServices;
+        private readonly IConsultationRequestServices _consultationRequestServices;
     }
 
     public partial class StudentEnrolledCourses : ObservableObject
