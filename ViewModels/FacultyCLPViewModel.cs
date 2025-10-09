@@ -31,7 +31,7 @@ namespace UM_Consultation_App_MAUI.ViewModels
                 MvvmHelper.Helper.DisplayMessage("No Consultation List");
                 return;
             }
-            foreach (var x in facultyConsultation.Where(fc => fc.Status != Consultation.Domain.Enum.Status.Upcoming))
+            foreach (var x in facultyConsultation.Where(fc => fc.Status != Consultation.Domain.Enum.Status.Pending))
             {
                 ConsultationsList.Add(new Consultations
                     (

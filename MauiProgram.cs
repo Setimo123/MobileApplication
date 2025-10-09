@@ -23,6 +23,8 @@ using Shiny.Infrastructure;
 using UM_Consultation_App_MAUI.MvvmHelper.Interface;
 using UM_Consultation_App_MAUI.MvvmHelper;
 using Microsoft.Extensions.DependencyInjection;
+using Consultation.App.Repository.IRepository;
+using Consultation.App.Repository;
 
 
 namespace UM_Consultation_App_MAUI
@@ -59,9 +61,10 @@ namespace UM_Consultation_App_MAUI
 
 
             //For services and repository
-            builder.Services.AddTransient<IAuthRepository, UserRepository>();
+            builder.Services.AddTransient<IUserRepository, UserRepository>();
             builder.Services.AddTransient<IStudentRepository, StudentRepository>();
             builder.Services.AddTransient<IAuthService, AuthService>();
+            builder.Services.AddTransient<IConsultationRequestRepository, ConsultationRequestRepository>();
             builder.Services.AddTransient<IConsultationRequestServices, ConsultationRequestServices>();
             builder.Services.AddTransient<IStudentServices, StudentServices>();
             builder.Services.AddTransient<Consultation.Repository.Repository.IRepository.IFacultyRepository, FacultyRepository>();
@@ -84,6 +87,7 @@ namespace UM_Consultation_App_MAUI
             builder.Services.AddTransient<ResponseViewModel>();
             builder.Services.AddTransient<FacultyCLPViewModel>();
             builder.Services.AddTransient<FacultyRequestViewModel>();
+            builder.Services.AddTransient<CreateAccountViewModel>();
            
 
             //Common Pages

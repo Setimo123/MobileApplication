@@ -89,7 +89,6 @@ namespace UM_Consultation_App_MAUI.ViewModels
             try
             {
                 _loadingScreen.Show();
-                await Task.Delay(1000);
                 if (string.IsNullOrEmpty(SelectedSchoolYear))
                 {
                     MvvmHelper.Helper.DisplayMessage($"Please Select a Semester");

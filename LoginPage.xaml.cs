@@ -21,4 +21,12 @@ public partial class LoginPage : ContentPage
 
         MvvmHelper.Helper.DisplayMessage("Hello World");
     }
+    //protected override async void OnAppearing()
+    //{
+    //    base.OnAppearing();
+    //    if (BindingContext is LoginViewModel vm)
+    //    {
+    //        await vm.LoadProgramCommand.ExecuteAsync(null);
+    //    }
+    //}
 }

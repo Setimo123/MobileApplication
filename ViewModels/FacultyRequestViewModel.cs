@@ -37,7 +37,7 @@ namespace UM_Consultation_App_MAUI.ViewModels
             var facultyConsultation = await _faculty.FacultyConsultation(faculty.FacultyID);
 
             var sortStatus = facultyConsultation.Where(fc =>
-             fc.Status == Consultation.Domain.Enum.Status.Upcoming).ToList();
+             fc.Status == Consultation.Domain.Enum.Status.Pending).ToList();
 
             if (faculty == null) return;
             

@@ -8,6 +8,7 @@ using Consultation.Services.Service.IService;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,84 +21,58 @@ namespace UM_Consultation_App_MAUI.ViewModels
     // balhin ra nako ni kung makabalo nako asa ang ViewModel sa RequestConsultationPage.
     public partial class RequestConsultationViewModel : ObservableObject
     {
-        [ObservableProperty]
-        private string studentname;
+        
 
-        [ObservableProperty]
-        private string studentumid;
+        public ObservableCollection<EnrolledCourse> AvailableCourses { get; } = new();
 
-        [ObservableProperty]
-        private string coursecode;
+        [ObservableProperty] private EnrolledCourse? selectedCourse;
 
-        [ObservableProperty]
-        private string courseinstructor;
+        // Entries
+        [ObservableProperty] private string courseCode = string.Empty;
+        [ObservableProperty] private string courseInstructor = string.Empty;
 
-        [ObservableProperty]
-        private string starttime;
+        [ObservableProperty] private string studentname = string.Empty;
+        [ObservableProperty] private string studentumid = string.Empty;
 
-        [ObservableProperty]
-        private string endtime;
+        // New inputs bound from XAML
+        [ObservableProperty] private DateTime dateOfConsultation = DateTime.Today;
+        [ObservableProperty] private string? selectedStartTimeText; 
+        [ObservableProperty] private string? selectedEndTimeText;   
+        [ObservableProperty] private string? concern;               
 
-        [ObservableProperty]
-        private string selectedcourses;
-
-        public ObservableCollection<StudentEnrolledCourses> AvailableCourses { get; } = new ObservableCollection<StudentEnrolledCourses>();
         private readonly ILoadingServices _loadingScreen;
         public RequestConsultationViewModel(IStudentServices studetnServices,
-            IConsultationRequestServices consultationRequestServices, ILoadingServices loadingservices)
+            IConsultationRequestServices consultationRequestServices, ILoadingServices loadingservices,
+            IFacultyServices facultyServices)
         {
             _consultationRequestServices = consultationRequestServices;
             _studentServices = studetnServices;
             _loadingScreen = loadingservices;
-            DisplayUserInformationOption();
-            DispalyUserInformation();
         }
 
-        private void DispalyUserInformation()
-        {
-            List<string> fullname = MvvmHelper.Helper.StringSplitter(' ', StudentInfo.StudentName);
-
-            //Use the LINQ for accessing the data in a list<string> 
-
-            string firstNames = string.Empty;
-            string lastName = fullname[fullname.Count - 1];
-
-            //Reusable pwede siya ma separate method
-            for (int i = 0; i < fullname.Count - 1; i++)
-            {
-                firstNames += fullname[i] + " ";
-            }
-
-            //Display name
-            Studentname = $"{lastName}, {firstNames}";
-            Studentumid = StudentInfo.StudentUMID;
-        }
 
         [RelayCommand]
-        private async void DisplayUserInformationOption()
+        private async Task DisplayUserInformationOption()
         {
-            //Student list 
-            var StudentCourses = await
-                _studentServices.GetStudentEnrolledCourses
-                (StudentInfo.StudentID, RequestViewModel.Semester);
+  
+            // name/UMID
+            var full = MvvmHelper.Helper.StringSplitter(' ', LoginViewModel.Student.StudentName);
+            var last = full.Last();
+            var firsts = string.Join(" ", full.Take(full.Count - 1));
+            Studentname = $"{last}, {firsts}";
+            Studentumid = LoginViewModel.Student.StudentUMID;
 
-            //Display data into the Combobox
-            foreach (var x in StudentCourses)
-            {
-                AvailableCourses.Add(new StudentEnrolledCourses(x.CourseName));
-            }
+            // courses
+            var list = await _studentServices.GetStudentEnrolledCourses(
+                LoginViewModel.Student.StudentID, RequestViewModel.Semester);
+
+            AvailableCourses.Clear();
+            foreach (var c in list)             
+                AvailableCourses.Add(c);
+
         }
 
-        public ICommand CourseCodeCommand => new Command<object>(ec =>
-        {
-             if (ec is EnrolledCourse courses)
-                {
-                    Courseinstructor = courses.Faculty?.FacultyName;
-                    Coursecode = courses.CourseCode;
-                  
-                }
-        }
-       );
+
 
         [RelayCommand]
         public async Task FileConsultationClick()
@@ -105,38 +80,54 @@ namespace UM_Consultation_App_MAUI.ViewModels
             try
             {
                 _loadingScreen.Show();
-                await Task.Delay(1000);
-                //if (string.IsNullOrWhiteSpace(studentname)
-                //    || string.IsNullOrWhiteSpace(courseinstructor)
-                //    || string.IsNullOrWhiteSpace(starttime)
-                //    || string.IsNullOrWhiteSpace(endtime)
-                //    || string.IsNullOrWhiteSpace(selectedcourses))
-                //{
-                //    await _consultationRequestServices.AddConsultation(
-                //        StudentInfo.StudentID,
-                //        Coursecode,
-                //        DateTime.Now,
-                //        TimeSpan.Parse(Starttime),
-                //        TimeSpan.Parse(Endtime),
-                //        Consultation.Domain.Enum.Status.Upcoming,
-                //        string.Empty);
-                //    MvvmHelper.Helper.DisplayMessage("Successfully Added Consultation Request");
-                //    AvailableCourses.Clear();
-                //}
-                //else
-                //{
-                //    MvvmHelper.Helper.DisplayMessage("Please fill in all the fields");
-                //}
+                if (string.IsNullOrWhiteSpace(SelectedStartTimeText) ||
+               string.IsNullOrWhiteSpace(SelectedEndTimeText))
+                {
+                    MvvmHelper.Helper.DisplayMessage("Please choose start and end time.");
+                    return;
+                }
+                if (!TimeOnly.TryParseExact(SelectedStartTimeText, "h:mm tt", CultureInfo.InvariantCulture,
+                                       DateTimeStyles.None, out var start))
+                {
+                    MvvmHelper.Helper.DisplayMessage("Invalid start time.");
+                    return;
+                }
+                if (!TimeOnly.TryParseExact(SelectedEndTimeText, "h:mm tt", CultureInfo.InvariantCulture,
+                                      DateTimeStyles.None, out var end))
+                {
+                    MvvmHelper.Helper.DisplayMessage("Invalid end time.");
+                    return;
+                }
+                var studentId = LoginViewModel.Student.StudentID;
+                var facultyId = SelectedCourse.Faculty?.FacultyID ?? 0; // prefer ID from the selected course
+                var subjectCode = SelectedCourse.CourseCode;
+                var subjectName = SelectedCourse.CourseName;
+                var programName = LoginViewModel.Student.Program.ProgramName;
 
+                await _consultationRequestServices.AddConsultation(
+               subjectCode,
+               subjectName,
+               start,
+               end,
+               studentId,
+               facultyId,
+               programName,
+               Concern ?? string.Empty,
+               DateOnly.FromDateTime(DateOfConsultation)
+                 );
+
+                MvvmHelper.Helper.DisplayMessage("Consultation request submitted.");
             }
             finally
             {
                 _loadingScreen.Hide();
             }
+        }
 
-
-            MvvmHelper.Helper.DisplayMessage("This feature is under development");  
-
+        partial void OnSelectedCourseChanged(EnrolledCourse? value)
+        {
+            CourseCode = value?.CourseCode ?? string.Empty;
+            CourseInstructor = value?.Faculty?.FacultyName ?? string.Empty;
         }
 
         [RelayCommand]
@@ -146,21 +137,10 @@ namespace UM_Consultation_App_MAUI.ViewModels
             await Shell.Current.GoToAsync("///Student");
         }
 
+
         private readonly Student StudentInfo = LoginViewModel.Student;
         private readonly IStudentServices _studentServices;
         private readonly IConsultationRequestServices _consultationRequestServices;
-    }
-
-    public partial class StudentEnrolledCourses : ObservableObject
-    {
-
-        [ObservableProperty]
-        private string courseName;
-     
-        public StudentEnrolledCourses(string coursename)
-        {
-            CourseName = coursename;
-           
-        }
+        private readonly IFacultyServices _facultyServices; 
     }
 }
