@@ -6,18 +6,18 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using UM_Consultation_App_MAUI.MvvmHelper.Interface;
 
 namespace UM_Consultation_App_MAUI.ViewModels
 {
     public partial class CreateAccountViewModel : ObservableObject
     {
         private readonly IAuthService _authService;
-        public CreateAccountViewModel(IAuthService authService)
-        {
-            _authService = authService;
-            AddUserType();
-        }
+        private readonly ILoadingServices _loadingScreen;
+        private readonly IConsultationRequestServices _requestServices;
+
         public ObservableCollection<string> Usertypes { get; } = new ObservableCollection<string>();
 
         [ObservableProperty]
@@ -30,12 +30,7 @@ namespace UM_Consultation_App_MAUI.ViewModels
         private string confirmpassword;
 
         [ObservableProperty]
-        private string usertype;
-
-        [ObservableProperty]
-        private string phonenumber;
-
-
+        private string username;
 
 
         private string selectedUserType;
@@ -46,47 +41,89 @@ namespace UM_Consultation_App_MAUI.ViewModels
             set => SetProperty(ref selectedUserType, value);
         }
 
+        private string selectedYearLevel;
+
+        public string SelectedYearLevel
+        {
+            get => selectedYearLevel;
+            set => SetProperty(ref selectedYearLevel, value);
+        }
+
+
+        private string selectedProgramList;
+
+        public string SelectedProgramList
+        {
+            get => selectedProgramList;
+            set => SetProperty(ref selectedProgramList, value);
+        }
+
+        public CreateAccountViewModel(IAuthService authService,ILoadingServices 
+            loadingservices,IConsultationRequestServices requestServices)
+        {
+            _requestServices = requestServices;
+            _loadingScreen = loadingservices;
+            _authService = authService;
+            DisplayComboBox();
+        }
+
+        public void DisplayComboBox()
+        {
+            var list = LoginViewModel.ProgramList;
+            Usertypes.Add("Student");
+            Usertypes.Add("Faculty");
+        }
 
         [RelayCommand]
-        private async Task CreateAccout()
-        {
-            //Add condition that textbox is empty
-            if (Password != Confirmpassword)
-            { 
-                MvvmHelper.Helper.DisplayMessage("Password did not match");
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(Email) 
-                || string.IsNullOrWhiteSpace(Password) 
-                || string.IsNullOrWhiteSpace(Confirmpassword) 
-                || string.IsNullOrWhiteSpace(Phonenumber)
-                || string.IsNullOrWhiteSpace(SelectedUserType))
-            {
-                MvvmHelper.Helper.DisplayMessage("Please fill in all fields");
-                return;
-            }
-
+        private async Task CreateAccoute()
+        {    
             try
             {
-                string email = Email.Split('.')[2];
-                int UMID = int.Parse(email.Split('.')[2].Substring(0, 6));
-
-                if (Email.Count(c => c == '.') != 3)
+                _loadingScreen.Show();
+                await Task.Delay(1000);
+                var emailPattern = @"^[a-zA-Z]+\.[a-zA-Z]+\.(\d{6})@umindanao\.edu\.ph$";
+                var match = Regex.Match(Email, emailPattern, RegexOptions.IgnoreCase);
+                string umid = match.Groups[1].Value;
+             
+                //Condition to check all fields
+                if (string.IsNullOrWhiteSpace(Email)
+                   || string.IsNullOrWhiteSpace(Password)
+                   || string.IsNullOrWhiteSpace(Confirmpassword)
+                   || string.IsNullOrWhiteSpace(SelectedUserType))
                 {
-                    MvvmHelper.Helper.DisplayMessage("Incorrect Email Format");
+                    MvvmHelper.Helper.DisplayMessage("Please fill in all fields");
                     return;
                 }
-
-                await _authService.CreateAccount(Email, UMID.ToString(), 
+                //Check if the Email is correct
+                if (!match.Success)
+                {
+                    MvvmHelper.Helper.DisplayMessage("" +
+                        "Incorrect Email Format. " +
+                        "Please use your UM email " +
+                        "(e.g., j.delacruz.123456@umindanao.edu.ph).");
+                    return;
+                }
+           
+                //Condition to check all password and confirm password
+                if (Password != Confirmpassword)
+                {
+                    MvvmHelper.Helper.DisplayMessage("Password did not match");
+                    return;
+                }
+                
+                await _authService.CreateAccount(Username,Email,
                     Password,
-                    UserTypeChecker(), 
-                    Phonenumber, 
-                    UMID.ToString());
+                    UserTypeChecker(),
+                    umid.ToString());
+                return;
             }
-            catch (FormatException)
+            catch (Exception ex)
             {
-                MvvmHelper.Helper.DisplayMessage("Incorrect Email Format");
+                MvvmHelper.Helper.DisplayMessage($"{ex.Message}");
+            }
+            finally
+            {
+                _loadingScreen.Hide();
             }
         }
 
@@ -104,12 +141,15 @@ namespace UM_Consultation_App_MAUI.ViewModels
 
             return Consultation.Domain.Enum.UserType.Admin;
         }
-
-        private void AddUserType()
+    }   
+        public partial class Program : ObservableObject
         {
-            Usertypes.Add("Student");
-            Usertypes.Add("Faculty");
-        }
 
-    }
-}
+            [ObservableProperty]
+            private string _programname;
+            public Program(string programname)
+            {
+                _programname = programname;
+            }
+        }
+ }

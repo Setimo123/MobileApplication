@@ -32,18 +32,11 @@
         <Frame BorderColor="gray" CornerRadius="10" Padding="5" >
             
                 <Picker Title="Choose Course" x:Name="CourseSelectPicker"
-                    SelectedIndex="0"
                     FontAttributes="Bold"
                     ItemsSource="{Binding AvailableCourses}"
-                    SelectedItem="{Binding Selectedcourses}"
+                    SelectedItem="{Binding SelectedCourse}"
                     ItemDisplayBinding="{Binding CourseName}">
 
-                    <Picker.Behaviors>
-                        <toolkit:EventToCommandBehavior
-                            EventName="SelectedIndexChanged"
-                            Command="{Binding CourseCodeCommand}"
-                            CommandParameter="{Binding Source={x:Reference CourseSelectPicker}, Path= SelectedItem}" />
-                    </Picker.Behaviors>
                 </Picker>
             </Frame>
 
@@ -53,7 +46,7 @@
         <Frame BorderColor="Gray" CornerRadius="10" Padding="5">
                 <Entry Placeholder="Enter Course Code" MaxLength="20"
                    IsReadOnly="True"
-                   Text="{Binding Coursecode}"   
+                   Text="{Binding CourseCode}"   
                    FontAttributes="Bold"
                    Keyboard="Numeric"
                    />
@@ -64,8 +57,9 @@
 
         <Frame BorderColor="Gray" CornerRadius="10" Padding="5">
             <Entry Placeholder="Enter Course Instructor"
+                   x:Name="CourseInstructor"
                    IsReadOnly="True"
-                   Text="{Binding Courseinstructor}"
+                   Text="{Binding CourseInstructor}"
                    FontAttributes="Bold"/>
         </Frame>
 
@@ -73,7 +67,7 @@
                FontSize="14"/>
 
         <Frame BorderColor="Gray" CornerRadius="10" Padding="5">
-            <DatePicker></DatePicker>
+                <DatePicker Date="{Binding DateOfConsultation}"></DatePicker>
         </Frame>
 
         <Label Text="Start Time"
@@ -81,6 +75,7 @@
 
         <Frame BorderColor="Gray" CornerRadius="10" Padding="5">
             <Picker Title="Choose Start Time"
+                    SelectedItem="{Binding SelectedStartTimeText}"   
                     SelectedIndex="0"
                     FontAttributes="Bold">
                 <Picker.Items>
@@ -122,6 +117,7 @@
         <Frame BorderColor="Gray" CornerRadius="10" Padding="5">
             <Picker Title="Choose End Time"
             SelectedIndex="0"
+            SelectedItem="{Binding SelectedEndTimeText}"   
             FontAttributes="Bold">
                 <Picker.Items>
                     <x:String>8:00 AM</x:String>
@@ -157,6 +153,7 @@
         <HorizontalStackLayout Spacing="15" Margin="50,10,0,0">
             <Button Text="File Consultation Request" 
                     BackgroundColor="#b61c1c"
+                    Command="{Binding FileConsultationClickCommand}"
                     TextColor="White"
                     FontAttributes="Bold"
                     CornerRadius="20"/>

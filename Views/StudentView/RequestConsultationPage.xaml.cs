@@ -11,7 +11,8 @@ public partial class RequestConsultationPage : ContentPage
 	{
 		InitializeComponent();
 		BindingContext = vm;
-	}
+	
+    }
 
     protected override void OnAppearing()
 	{
@@ -19,7 +20,7 @@ public partial class RequestConsultationPage : ContentPage
 		if (BindingContext is RequestConsultationViewModel rcvm)
 		{
 			rcvm.DisplayUserInformationOptionCommand.Execute(null);
-		}
+        }
 	}
 
 }

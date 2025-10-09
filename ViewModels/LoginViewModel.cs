@@ -44,12 +44,14 @@ namespace UM_Consultation_App_MAUI.ViewModels
         }
 
         public LoginViewModel(IAuthService authService,IStudentServices studetnServices,
-            IFacultyServices facultyServices, ILoadingServices loadingScreen)
+            IFacultyServices facultyServices, ILoadingServices loadingScreen, 
+            IConsultationRequestServices requestServices)
         {
             _loadingScreen = loadingScreen;
             _facultyServices = facultyServices;
             _authService = authService;
             _studentServices = studetnServices;
+            _requestServices = requestServices;
         }
 
 
@@ -60,8 +62,7 @@ namespace UM_Consultation_App_MAUI.ViewModels
             try
             {
                 _loadingScreen.Show();
-                await Task.Delay(1000);
-
+                await Task.Delay(2000);
                 Users studentUsers = await _authService.Login(Email, Password, "Student");
                 Users facultyUsers = await _authService.Login(Email, Password, "Faculty");
 
@@ -93,12 +94,28 @@ namespace UM_Consultation_App_MAUI.ViewModels
             }
         }
 
+        [RelayCommand]
+        private async Task LoadProgram()
+        {
+            foreach (var i in await _requestServices.GetProgram())
+            {
+                ProgramList.Add(i.Description);
+            }
+        }
+
         //Command to route the create account
         [RelayCommand]
         private async Task CreateAccountClick()
         {
-
-            await Shell.Current.GoToAsync("CreateAccountPage");
+            try
+            {
+                _loadingScreen.Show();
+                await Shell.Current.GoToAsync("CreateAccountPage");
+            }
+            finally
+            {
+                _loadingScreen.Hide();
+            }
         }
 
         private async Task StudentInformation(string userUMIDNumber)
@@ -118,10 +135,14 @@ namespace UM_Consultation_App_MAUI.ViewModels
 
         private readonly IFacultyServices _facultyServices;
 
+        private readonly IConsultationRequestServices _requestServices;
+
         //Statics function so all pages has the flexibility to access data that only needed
         public static Student Student { get; set; } = new Student();
         public static Faculty Faculty { get; set; } = new Faculty();
         public static bool AccountVerification { get; set; }
+
+        public static List<string> ProgramList { get; set; } = new List<string>();
         public string userUMIDNumber { get; set; }
 
         private readonly ILoadingServices _loadingScreen;

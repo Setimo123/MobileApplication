@@ -1,31 +1,18 @@
+using UM_Consultation_App_MAUI.ViewModels;
+
 namespace UM_Consultation_App_MAUI.Views;
 
 
 public partial class CreateAccountPage : ContentPage
 {
-    // and kani
     bool isPasswordHidden = true;
     bool isConfirmPasswordHidden = true;
-    public CreateAccountPage()
+    public CreateAccountPage(CreateAccountViewModel vm)
     {
         InitializeComponent();
+        BindingContext = vm;
     }
-    // everything below kay Arobo
-    // backend team feel free to modify
-    
-    private async void SignUpButton(object? sender, EventArgs e)
-    {
-        if (string.IsNullOrWhiteSpace(txtboxEmail.Text) || string.IsNullOrWhiteSpace(txtboxPassword.Text) || string.IsNullOrWhiteSpace(txtboxConfirmPassword.Text))
-        {
-            await DisplayAlert("Error", "Please fill in all fields.", "OK");
-            return;
-        }
-        else
-        {
-            await DisplayAlert("Sign Up", "Account Created Successfully.", "OK");
-            //Pa-add sa code for login page...
-        }
-    }
+
 
     private void TogglePasswordVisibility(object sender, EventArgs e)
     {
