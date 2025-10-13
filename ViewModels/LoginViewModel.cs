@@ -62,7 +62,7 @@ namespace UM_Consultation_App_MAUI.ViewModels
             try
             {
                 _loadingScreen.Show();
-                await Task.Delay(2000);
+                await Task.Delay(1000);
                 Users studentUsers = await _authService.Login(Email, Password, "Student");
                 Users facultyUsers = await _authService.Login(Email, Password, "Faculty");
 

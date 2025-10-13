@@ -9,4 +9,10 @@ public partial class HomePage : ContentPage
 		InitializeComponent();
         BindingContext = shpvm;
     }
+    protected override void OnNavigatedTo(NavigatedToEventArgs args)
+    {
+        base.OnNavigatedTo(args);
+        if (BindingContext is HomeViewModel vm)
+            vm.RefreshCommand.Execute(null);
+    }
 }

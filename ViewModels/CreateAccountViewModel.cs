@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Consultation.Service.IService;
+using Consultation.Services.Service;
+using Consultation.Services.Service.IService;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,7 +19,7 @@ namespace UM_Consultation_App_MAUI.ViewModels
         private readonly IAuthService _authService;
         private readonly ILoadingServices _loadingScreen;
         private readonly IConsultationRequestServices _requestServices;
-
+        private readonly IActionServices _actionServices;
         public ObservableCollection<string> Usertypes { get; } = new ObservableCollection<string>();
 
         [ObservableProperty]
@@ -59,8 +61,10 @@ namespace UM_Consultation_App_MAUI.ViewModels
         }
 
         public CreateAccountViewModel(IAuthService authService,ILoadingServices 
-            loadingservices,IConsultationRequestServices requestServices)
+            loadingservices,IConsultationRequestServices requestServices,IActionServices 
+            actionservices)
         {
+            _actionServices = actionservices;
             _requestServices = requestServices;
             _loadingScreen = loadingservices;
             _authService = authService;
@@ -115,6 +119,8 @@ namespace UM_Consultation_App_MAUI.ViewModels
                     Password,
                     UserTypeChecker(),
                     umid.ToString());
+                
+                MvvmHelper.Helper.DisplayMessage("Account has been Registered");
                 return;
             }
             catch (Exception ex)

@@ -21,24 +21,26 @@ namespace UM_Consultation_App_MAUI.ViewModels
     // balhin ra nako ni kung makabalo nako asa ang ViewModel sa RequestConsultationPage.
     public partial class RequestConsultationViewModel : ObservableObject
     {
-        
-
         public ObservableCollection<EnrolledCourse> AvailableCourses { get; } = new();
 
         [ObservableProperty] private EnrolledCourse? selectedCourse;
 
-        // Entries
         [ObservableProperty] private string courseCode = string.Empty;
+
         [ObservableProperty] private string courseInstructor = string.Empty;
 
         [ObservableProperty] private string studentname = string.Empty;
+
         [ObservableProperty] private string studentumid = string.Empty;
 
-        // New inputs bound from XAML
         [ObservableProperty] private DateTime dateOfConsultation = DateTime.Today;
+
         [ObservableProperty] private string? selectedStartTimeText; 
+
         [ObservableProperty] private string? selectedEndTimeText;   
-        [ObservableProperty] private string? concern;               
+
+        [ObservableProperty] private string? concern;
+
 
         private readonly ILoadingServices _loadingScreen;
         public RequestConsultationViewModel(IStudentServices studetnServices,
@@ -69,10 +71,7 @@ namespace UM_Consultation_App_MAUI.ViewModels
             AvailableCourses.Clear();
             foreach (var c in list)             
                 AvailableCourses.Add(c);
-
         }
-
-
 
         [RelayCommand]
         public async Task FileConsultationClick()
@@ -99,7 +98,7 @@ namespace UM_Consultation_App_MAUI.ViewModels
                     return;
                 }
                 var studentId = LoginViewModel.Student.StudentID;
-                var facultyId = SelectedCourse.Faculty?.FacultyID ?? 0; // prefer ID from the selected course
+                var facultyId = SelectedCourse.Faculty?.FacultyID ?? 0;
                 var subjectCode = SelectedCourse.CourseCode;
                 var subjectName = SelectedCourse.CourseName;
                 var programName = LoginViewModel.Student.Program.ProgramName;
@@ -115,8 +114,7 @@ namespace UM_Consultation_App_MAUI.ViewModels
                Concern ?? string.Empty,
                DateOnly.FromDateTime(DateOfConsultation)
                  );
-
-                MvvmHelper.Helper.DisplayMessage("Consultation request submitted.");
+                MvvmHelper.Helper.DisplayMessage("Consultation request submitted Successfully.");
             }
             finally
             {
@@ -137,8 +135,6 @@ namespace UM_Consultation_App_MAUI.ViewModels
             await Shell.Current.GoToAsync("///Student");
         }
 
-
-        private readonly Student StudentInfo = LoginViewModel.Student;
         private readonly IStudentServices _studentServices;
         private readonly IConsultationRequestServices _consultationRequestServices;
         private readonly IFacultyServices _facultyServices; 

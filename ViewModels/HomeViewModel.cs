@@ -1,9 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Consultation.Domain;
 using Consultation.Domain.Enum;
 using Consultation.Repository.Repository.IRepository;
 using Consultation.Service;
 using Consultation.Service.IService;
+using Consultation.Services.Service;
 using Consultation.Services.Service.IService;
 using Enum;
 using System;
@@ -12,6 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UM_Consultation_App_MAUI.MvvmHelper;
+using UM_Consultation_App_MAUI.MvvmHelper.Interface;
 
 
 namespace UM_Consultation_App_MAUI.ViewModels
@@ -37,10 +41,19 @@ namespace UM_Consultation_App_MAUI.ViewModels
         [ObservableProperty]
         private string pendingconsultation;
 
+        [ObservableProperty]
+        private bool refereshing;
 
-        public HomeViewModel()
+        private readonly ILoadingServices _loadingservices;
+        private readonly IStudentServices _studentservices;
+
+        public HomeViewModel(ILoadingServices loadingservices,
+            IStudentServices studentServices)
         {
+            _loadingservices = loadingservices;
+            _studentservices = studentServices; 
             DisplayStudentUserInformation();
+
         }
 
         private async void DisplayStudentUserInformation()
@@ -54,24 +67,15 @@ namespace UM_Consultation_App_MAUI.ViewModels
                     return;
                 }
 
-                UserInformation(StudentInfo);
-                Pendingconsultation = StudentInfo.
-                                      ConsultationRequests.
-                                      Where(c => c.Status  == Status.Pending).Count().ToString();
-
             }
             catch (Exception ex)
             {
                 Helper.DisplayMessage($"{ex.Message}");
             }
         }
-
-
         private void UserInformation(Student studentInfo)
         {
             List<string> fullname = Helper.StringSplitter(' ', studentInfo.StudentName);
-
-            //Use the LINQ for accessing the data in a list<string> 
 
             string firstNames = string.Empty;
             string lastName = fullname[fullname.Count - 1];
@@ -89,6 +93,27 @@ namespace UM_Consultation_App_MAUI.ViewModels
 
             Useryearlevel = $"{Helper.GetYearLevelName(studentInfo.yearLevel)} Bachelors of ";
             Program = $"{studentInfo.Program.Description}";
+        }
+
+        [RelayCommand]
+        public async Task Refresh()
+        {
+            try
+            {
+                _loadingservices.Show();
+                await Task.Delay(1000);
+                Student StudentInfo = LoginViewModel.Student;
+                UserInformation(StudentInfo);
+                var totalConsultation = await
+                    _studentservices.GetStudentConsultationRequests(StudentInfo.StudentID,
+                    Consultation.Domain.Enum.Status.Pending);
+                Pendingconsultation = (totalConsultation?.Count ?? 0).ToString();
+
+            }
+            finally
+            {
+                _loadingservices.Hide();
+            }
         }
     }
 }

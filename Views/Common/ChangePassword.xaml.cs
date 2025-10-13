@@ -6,6 +6,7 @@ using Consultation.Service.IService;
 using Consultation.Services.Service.IService;
 using UM_Consultation_App_MAUI.ViewModels;
 
+
 namespace UM_Consultation_App_MAUI.Views.Common;
 
 public partial class ChangePassword : Popup
@@ -22,7 +23,9 @@ public partial class ChangePassword : Popup
         Close();
     }
 
-	private async void OnUpdateClicked(object sender, EventArgs e)
+ 
+
+    private async void OnUpdateClicked(object sender, EventArgs e)
 	{
         if (
             string.IsNullOrWhiteSpace(NewPasswordEntry.Text) ||
@@ -36,8 +39,28 @@ public partial class ChangePassword : Popup
             MvvmHelper.Helper.DisplayMessage("Password does not match");
             return;
         }
-         await _authService.ChangePassword(NewPasswordEntry.Text,"550200");
 
+        Student student = LoginViewModel.Student;
+        Faculty faculty = LoginViewModel.Faculty;
+        if (student == null || faculty == null)
+        {
+            MvvmHelper.Helper.DisplayMessage($"Hello world");
+            return;
+        }
+         
+
+        if (LoginViewModel.AccountVerification == true)
+        {
+            MvvmHelper.Helper.DisplayMessage($"{student.Email} and {NewPasswordEntry.Text}");
+            await _authService.ChangePassword(NewPasswordEntry.Text, student.Email);
+            return;
+        }
+        if (LoginViewModel.AccountVerification == false)
+        {
+            MvvmHelper.Helper.DisplayMessage($"{faculty.FacultyEmail}");
+            await _authService.ChangePassword(NewPasswordEntry.Text, faculty.FacultyEmail);
+            return;
+        }
         Close(true);
     }
-}
+}  

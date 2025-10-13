@@ -4,6 +4,7 @@ using Consultation.Domain;
 using Consultation.Services.Service.IService;
 using System.Collections.ObjectModel;
 using UM_Consultation_App_MAUI.MvvmHelper;
+using UM_Consultation_App_MAUI.MvvmHelper.Interface;
 
 
 namespace UM_Consultation_App_MAUI.ViewModels
@@ -14,6 +15,7 @@ namespace UM_Consultation_App_MAUI.ViewModels
         public ObservableCollection<Response> Responses { get; set; } = new ObservableCollection<Response>();
         public ObservableCollection<string> Options { get; set; } = new ObservableCollection<string>();
         private readonly IStudentServices _studentServices;
+        private readonly ILoadingServices _loadingServices;
 
 
         private string selectedSemester;
@@ -24,41 +26,50 @@ namespace UM_Consultation_App_MAUI.ViewModels
             set => SetProperty(ref selectedSemester, value);
         }
 
-        public ResponseViewModel(IStudentServices studentServices)
+        public ResponseViewModel(IStudentServices studentServices,ILoadingServices 
+            loadingservices)
         {
+            _loadingServices = loadingservices;
             _studentServices = studentServices;
-            LoadResponses();
         }
 
-       
+        [RelayCommand]
         private async void LoadResponses()
         {
-            var student = LoginViewModel.Student;
-            var list = await _studentServices.GetStudentConsultationRequests(student.StudentID);
-
-            var s = await _studentServices.GetStudentEnrolledCourses(student.StudentID);
-
-            foreach (var y in s.DistinctBy(sy => sy.SchoolYearID == student.SchoolYearID))
+            try
             {
-                if (y.SchoolYear.Semester != Consultation.Domain.Enum.Semester.Summer)
+                _loadingServices.Show();
+                await Task.Delay(1000);
+                var student = LoginViewModel.Student;
+               
+                var list = await _studentServices.GetAllStudentConsultationRequests(student.StudentID);
+                //var s = await _studentServices.GetStudentEnrolledCourses(student.StudentID);
+
+                //foreach (var y in s.DistinctBy(sy => sy.SchoolYearID == student.SchoolYearID))
+                //{
+                //    if (y.SchoolYear.Semester != Consultation.Domain.Enum.Semester.Summer)
+                //    {
+                //        string ComboBoxFormat
+                //         = $"{Helper.GetSemesterName(y.SchoolYear.Semester)}" +
+                //            $" {y.SchoolYear.Year1} - {y.SchoolYear.Year2}";
+                //        Options.Add(ComboBoxFormat);
+                //    }
+                //}
+
+                foreach (var i in list)
                 {
-                    string ComboBoxFormat
-                     = $"{Helper.GetSemesterName(y.SchoolYear.Semester)}" +
-                        $" {y.SchoolYear.Year1} - {y.SchoolYear.Year2}";
-                    Options.Add(ComboBoxFormat);
+                    Responses.Add(
+                        new Response(i.ConsultationID, i.SubjectCode, i.Student.StudentName, i.StartedTime.ToString()
+                        , i.EndedTime.ToString(), i.DateSchedule.ToString(), i.Status.ToString()));
                 }
             }
-
-            foreach (var i in list)
+            finally
             {
-                Responses.Add(
-                    new Response(i.ConsultationID,i.SubjectCode,i.Student.StudentName,i.StartedTime.ToString()
-                    ,i.EndedTime.ToString(),i.DateSchedule.ToString(),i.Status.ToString()));
-            } 
+                _loadingServices.Hide();
+            }
         }
      }
     
-        //model hahahahahahaha
        public partial class Response : ObservableObject
       {
         [ObservableProperty]

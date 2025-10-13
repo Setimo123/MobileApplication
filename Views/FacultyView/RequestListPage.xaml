@@ -59,7 +59,7 @@
                                                          CommandParameter="{Binding .}"
                                             Margin="10" TextColor="#3c9357" BackgroundColor="#eefdf3" CornerRadius="10"
                                             HeightRequest="40" WidthRequest="40"/>
-                            <Button Text="✖" Grid.Column="2" Command="{Binding BindingContext.DisapproveRequestCommand, 
+                            <Button Text="✖" Grid.Column="2" Command="{Binding BindingContext.DisApproveRequestCommand, 
                                                Source={x:Reference local:RequestListPage}}"
                                                                  CommandParameter="{Binding .}"
                                             Margin="10" TextColor="#de3e43" BackgroundColor="#fdf2f2" CornerRadius="10"

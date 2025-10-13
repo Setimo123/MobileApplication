@@ -13,8 +13,6 @@ using System.Windows.Input;
 
 namespace UM_Consultation_App_MAUI.ViewModels
 {
-    //ViewModel for all pages in FacultyView
-
     public partial class FacultyRequestViewModel : ObservableObject
     {
         public ObservableCollection<RequestList> PendingRequests { get; set; } 
@@ -84,8 +82,6 @@ namespace UM_Consultation_App_MAUI.ViewModels
         [RelayCommand]
         private async Task DisApproveRequest(Consultations selectedConsultation)
         {
-            //Change the status of the request to disapproved
-
             int id = int.Parse(selectedConsultation.Id);
 
             bool option = await MvvmHelper.Helper.DisplayOption(

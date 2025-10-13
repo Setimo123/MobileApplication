@@ -69,10 +69,16 @@ namespace UM_Consultation_App_MAUI
             builder.Services.AddTransient<IStudentServices, StudentServices>();
             builder.Services.AddTransient<Consultation.Repository.Repository.IRepository.IFacultyRepository, FacultyRepository>();
             builder.Services.AddTransient<Consultation.Services.Service.IService.IFacultyServices, FacultyServices>();
-            builder.Services.AddSingleton<ILoadingServices, LoadingServices>();
+            builder.Services.AddTransient<ILoadingServices, LoadingServices>();
+            builder.Services.AddTransient<IActionRepository, ActionRepository>();
+            builder.Services.AddTransient<IActionServices, ActionServices>();
             builder.Services.AddIdentityCore<Consultation.Domain.Users>()
                           .AddRoles<IdentityRole>()
                          .AddEntityFrameworkStores<AppDbContext>();
+
+            builder.Services.AddIdentityCore<Users>() // Use your custom User class
+                .AddEntityFrameworkStores<AppDbContext>() // Use your DbContext
+                .AddDefaultTokenProviders();
 
             // Password Hasher
             builder.Services.AddSingleton<IPasswordHasher<Users>, PasswordHasher<Users>>();

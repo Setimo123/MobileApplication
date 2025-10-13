@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UM_Consultation_App_MAUI.MvvmHelper.Interface;
+using UM_Consultation_App_MAUI.Views.Common;
 
 namespace UM_Consultation_App_MAUI.ViewModels
 {
@@ -30,10 +31,13 @@ namespace UM_Consultation_App_MAUI.ViewModels
 
         private readonly IAuthService _authService;
         private readonly ILoadingServices _loadingScreen;
+        private readonly ChangePassword _changePassword;
+
         public static string UmId { get; set; }
 
-        public MenuViewModel(IAuthService authService, ILoadingServices loadingScreen)
+        public MenuViewModel(IAuthService authService, ILoadingServices loadingScreen,ChangePassword cp)
         {
+            _changePassword = cp;
             DisplayStudentInformation();
             _authService = authService;
             _loadingScreen = loadingScreen;
@@ -66,8 +70,16 @@ namespace UM_Consultation_App_MAUI.ViewModels
         [RelayCommand]
         private async Task ChangePassword()
         {
-            var popup = new Views.Common.ChangePassword(_authService); 
-            var result = await Application.Current.MainPage.ShowPopupAsync(popup); 
+            var result = await Application.Current.MainPage.ShowPopupAsync(_changePassword);
+
+            if (result is true)
+            {
+                MvvmHelper.Helper.DisplayMessage("Password changed successfully.");
+            }
+            else
+            {
+                MvvmHelper.Helper.DisplayMessage("Password was not cancelled.");
+            }
         }
 
         [RelayCommand]

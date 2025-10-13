@@ -10,56 +10,54 @@
         <mct:StatusBarBehavior StatusBarColor="#8c221e" />
     </Page.Behaviors>
 
-    <VerticalStackLayout Padding="20" Spacing="15">
+    <Grid RowDefinitions="Auto,*">
+        <!-- Header + controls -->
+        <VerticalStackLayout Grid.Row="0" Padding="20" Spacing="15">
+            <Label Text="Consultation Responses"
+                   FontSize="24" FontAttributes="Bold"
+                   TextColor="Black" HorizontalOptions="Center"/>
 
-        <Label Text="Consultation Responses"
-               FontSize="24"
-               FontAttributes="Bold"
-               TextColor="Black"
-               HorizontalOptions="Center"/>
-
-
-        <Picker Title="All"
-                ItemsSource="{Binding Options}"
-                SelectedItem="{Binding SelectedSemster, Mode= TwoWay}"
-                TitleColor="Black"
-                SelectedIndex="0"
-                BackgroundColor="#EFEFEF"
-                FontAttributes="Bold"
-                FontSize="18"
-                WidthRequest="50"
-                HeightRequest="50"
-                HorizontalOptions="Center">
-        </Picker>
-
-        <ListView ItemsSource="{Binding Responses}" HasUnevenRows="True" SeparatorVisibility="None">
-            <ListView.ItemTemplate>
+            <Picker Title="All"
+                    ItemsSource="{Binding Options}"
+                    SelectedItem="{Binding SelectedSemster, Mode=TwoWay}"
+                    TitleColor="Black"
+                    BackgroundColor="#EFEFEF"
+                    FontAttributes="Bold"
+                    FontSize="18"
+                    WidthRequest="50"
+                    HeightRequest="50"
+                    HorizontalOptions="Center" />
+        </VerticalStackLayout>
+        
+        <CollectionView Grid.Row="1"
+                        ItemsSource="{Binding Responses}">
+            <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <ViewCell>
-                        <Frame Margin="10"
-                       Padding="15"
-                       CornerRadius="12"
-                       BackgroundColor="#f4f4f4"
-                       HasShadow="True">
-                            <StackLayout Spacing="5">
-                                <Label Text="{Binding CourseCode}" 
-                               FontAttributes="Bold" 
-                               FontSize="18"
-                               TextColor="#333"/>
-                                <Label Text="{Binding Name}" FontSize="16"/>
-                                <Label Text="{Binding DateStarted}" FontSize="14"/>
-                                <Label Text="{Binding DateEnded}" FontSize="14"/>
-                                <Label Text="{Binding Schedule}" FontSize="14"/>
-                                <Label Text="{Binding Status}" 
-                               TextColor="{Binding StatusColor}" 
-                               FontAttributes="Italic"
-                               FontSize="14"/>
-                            </StackLayout>
-                        </Frame>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                    <Border Margin="10" Padding="15"
+                            BackgroundColor="#f4f4f4">
 
-    </VerticalStackLayout>
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+
+                        <Border.Shadow>
+                            <Shadow Brush="Black"
+                                    Offset="5,5"
+                                    Radius="10"
+                                    Opacity="0.3"/>
+                        </Border.Shadow>
+
+                        <StackLayout Spacing="5">
+                            <Label Text="{Binding CourseCode}" FontAttributes="Bold" FontSize="18" TextColor="#333"/>
+                            <Label Text="{Binding Name}" FontSize="16"/>
+                            <Label Text="{Binding DateStarted}" FontSize="14"/>
+                            <Label Text="{Binding DateEnded}" FontSize="14"/>
+                            <Label Text="{Binding Schedule}" FontSize="14"/>
+                            <Label Text="{Binding Status}" TextColor="{Binding StatusColor}" FontAttributes="Italic" FontSize="14"/>
+                        </StackLayout>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
 </ContentPage>
