@@ -85,7 +85,7 @@ namespace UM_Consultation_App_MAUI.ViewModels
                 firstNames += fullname[i] + " ";
             }
 
-            Studentname = $"{lastName},{firstNames.TrimEnd()}";
+            Studentname = $"{lastName}, {firstNames.TrimEnd()}";
 
             Umid = studentInfo.StudentUMID;
             Schoolyear = $"{Helper.GetSemesterName(studentInfo.SchoolYear.Semester)} " +
@@ -101,13 +101,13 @@ namespace UM_Consultation_App_MAUI.ViewModels
             try
             {
                 _loadingservices.Show();
-                await Task.Delay(1000);
-                Student StudentInfo = LoginViewModel.Student;
-                UserInformation(StudentInfo);
-                var totalConsultation = await
-                    _studentservices.GetStudentConsultationRequests(StudentInfo.StudentID,
-                    Consultation.Domain.Enum.Status.Pending);
-                Pendingconsultation = (totalConsultation?.Count ?? 0).ToString();
+                 await Task.Delay(1000);
+                    Student StudentInfo = LoginViewModel.Student;
+                    UserInformation(StudentInfo);
+                    var totalConsultation = await
+                        _studentservices.GetStudentConsultationRequests(StudentInfo.StudentID,
+                        Consultation.Domain.Enum.Status.Pending);
+                    Pendingconsultation = (totalConsultation?.Count ?? 0).ToString();
 
             }
             finally

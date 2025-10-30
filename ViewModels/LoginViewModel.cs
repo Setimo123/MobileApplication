@@ -59,39 +59,46 @@ namespace UM_Consultation_App_MAUI.ViewModels
         [RelayCommand]
         private async Task ClickLogIn()
         {
-            try
+            if (Connectivity.Current.NetworkAccess == NetworkAccess.None)
             {
-                _loadingScreen.Show();
-                await Task.Delay(1000);
-                Users studentUsers = await _authService.Login(Email, Password, "Student");
-                Users facultyUsers = await _authService.Login(Email, Password, "Faculty");
-
-                if (studentUsers != null)   
+                MvvmHelper.Helper.DisplayMessage("No Internet Connection");
+            }
+            else
+            {
+                try
                 {
+                    _loadingScreen.Show();
+                    await Task.Delay(1000);
+                    Users studentUsers = await _authService.Login(Email, Password, "Student");
+                    Users facultyUsers = await _authService.Login(Email, Password, "Faculty");
 
-                    await StudentInformation(studentUsers.UMID);
-                    await Shell.Current.GoToAsync($"///Student");
-                    AccountVerification = true;
-                    return;
+                    if (studentUsers != null)
+                    {
+
+                        await StudentInformation(studentUsers.UMID);
+                        await Shell.Current.GoToAsync($"///Student");
+                        AccountVerification = true;
+                        return;
+                    }
+                    else if (facultyUsers != null)
+                    {
+                        await FacultyInformation(facultyUsers.UMID);
+                        await Shell.Current.GoToAsync("///FacultyHomePage");
+                        AccountVerification = false;
+                        return;
+                    }
+                    else
+                    {
+                        _loadingScreen.Hide();
+                        MvvmHelper.Helper.DisplayMessage("Invalid Credential");
+                        return;
+                    }
                 }
-                else if (facultyUsers != null)
-                {
-                    await FacultyInformation(facultyUsers.UMID);
-                    await Shell.Current.GoToAsync("///FacultyHomePage");
-                    AccountVerification = false;
-                    return;
-                }
-                else
+                finally
                 {
                     _loadingScreen.Hide();
-                    App.Current.MainPage.DisplayAlert("Message", $"Invalid Credential", "OK");
-                    return;
                 }
-            }
-            finally
-            {
-                _loadingScreen.Hide();
-            }
+            }        
         }
 
         [RelayCommand]

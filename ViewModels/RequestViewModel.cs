@@ -18,18 +18,12 @@ namespace UM_Consultation_App_MAUI.ViewModels
     [QueryProperty(nameof(Semester), "Semester")]
     public partial class RequestViewModel : ObservableObject
     {
-
-        //List to add the data from the database
         public ObservableCollection<StudentEnrolledCourses> EnrolledCourselist { get; } = new ObservableCollection<StudentEnrolledCourses>();
         public ObservableCollection<string> SchoolYear {  get; } = new ObservableCollection<string>();
 
         private readonly ILoadingServices _loadingScreen;
 
-
-        //Code for the selected Item.
-        //This is used to select the desire school year
         private string selectedSchoolYear;
-
         public string SelectedSchoolYear
         {
             get => selectedSchoolYear;
@@ -51,10 +45,10 @@ namespace UM_Consultation_App_MAUI.ViewModels
         {
             Student StudentInfo = LoginViewModel.Student;
 
-            //add the list into the enrolledCourses List
             try
             {
                 var s = await _studentServices.GetStudentEnrolledCourses(StudentInfo.StudentID);
+
                 foreach (var x in s)
                 {
                     EnrolledCourselist.Add(
@@ -73,7 +67,6 @@ namespace UM_Consultation_App_MAUI.ViewModels
                         SchoolYear.Add(ComboBoxFormat);
                     }
                 }
-
             }
             catch (Exception ex)
             {

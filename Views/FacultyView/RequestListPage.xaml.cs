@@ -9,4 +9,11 @@ public partial class RequestListPage : ContentPage
 		InitializeComponent();
 		BindingContext = vm;
     }
+
+    protected override void OnNavigatedTo(NavigatedToEventArgs args)
+    {
+        base.OnNavigatedTo(args);
+        if (BindingContext is FacultyRequestViewModel vm)
+            vm.DisplayConsultataionCommand.Execute(null);
+    }
 }

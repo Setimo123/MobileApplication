@@ -19,7 +19,6 @@ namespace UM_Consultation_App_MAUI.ViewModels
         private readonly IAuthService _authService;
         private readonly ILoadingServices _loadingScreen;
         private readonly IConsultationRequestServices _requestServices;
-        private readonly IActionServices _actionServices;
         public ObservableCollection<string> Usertypes { get; } = new ObservableCollection<string>();
 
         [ObservableProperty]
@@ -61,10 +60,8 @@ namespace UM_Consultation_App_MAUI.ViewModels
         }
 
         public CreateAccountViewModel(IAuthService authService,ILoadingServices 
-            loadingservices,IConsultationRequestServices requestServices,IActionServices 
-            actionservices)
+            loadingservices,IConsultationRequestServices requestServices)
         {
-            _actionServices = actionservices;
             _requestServices = requestServices;
             _loadingScreen = loadingservices;
             _authService = authService;

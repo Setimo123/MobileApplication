@@ -57,14 +57,13 @@ namespace UM_Consultation_App_MAUI.ViewModels
         private async Task DisplayUserInformationOption()
         {
   
-            // name/UMID
-            var full = MvvmHelper.Helper.StringSplitter(' ', LoginViewModel.Student.StudentName);
-            var last = full.Last();
-            var firsts = string.Join(" ", full.Take(full.Count - 1));
+            var fullname = MvvmHelper.Helper.StringSplitter(' ', 
+                LoginViewModel.Student.StudentName);
+            var last = fullname.Last();
+            var firsts = string.Join(" ", fullname.Take(fullname.Count - 1));
             Studentname = $"{last}, {firsts}";
             Studentumid = LoginViewModel.Student.StudentUMID;
 
-            // courses
             var list = await _studentServices.GetStudentEnrolledCourses(
                 LoginViewModel.Student.StudentID, RequestViewModel.Semester);
 
@@ -85,14 +84,14 @@ namespace UM_Consultation_App_MAUI.ViewModels
                     MvvmHelper.Helper.DisplayMessage("Please choose start and end time.");
                     return;
                 }
-                if (!TimeOnly.TryParseExact(SelectedStartTimeText, "h:mm tt", CultureInfo.InvariantCulture,
-                                       DateTimeStyles.None, out var start))
+                if (!TimeOnly.TryParseExact(SelectedStartTimeText, "h:mm tt",
+                    CultureInfo.InvariantCulture,DateTimeStyles.None, out var start))
                 {
                     MvvmHelper.Helper.DisplayMessage("Invalid start time.");
                     return;
                 }
-                if (!TimeOnly.TryParseExact(SelectedEndTimeText, "h:mm tt", CultureInfo.InvariantCulture,
-                                      DateTimeStyles.None, out var end))
+                if (!TimeOnly.TryParseExact(SelectedEndTimeText, "h:mm tt",
+                    CultureInfo.InvariantCulture,DateTimeStyles.None, out var end))
                 {
                     MvvmHelper.Helper.DisplayMessage("Invalid end time.");
                     return;

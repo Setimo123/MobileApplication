@@ -41,7 +41,6 @@
                          x:Name="txtboxFullName"
                          Text="{Binding Username}"
                          FontAttributes="Bold"
-                         IsPassword="True"
                          Placeholder="Full Name"
                          BackgroundColor="Transparent"
                          TextColor="Black"
@@ -226,8 +225,6 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                 </Grid>

@@ -12,6 +12,7 @@ namespace UM_Consultation_App_MAUI.Views.Common;
 public partial class ChangePassword : Popup
 {
     private readonly IAuthService _authService;
+    private bool result { get; set; }
     public ChangePassword(IAuthService authService)
 	{
         _authService = authService;
@@ -22,8 +23,6 @@ public partial class ChangePassword : Popup
 	{
         Close();
     }
-
- 
 
     private async void OnUpdateClicked(object sender, EventArgs e)
 	{
@@ -51,16 +50,24 @@ public partial class ChangePassword : Popup
 
         if (LoginViewModel.AccountVerification == true)
         {
-            MvvmHelper.Helper.DisplayMessage($"{student.Email} and {NewPasswordEntry.Text}");
-            await _authService.ChangePassword(NewPasswordEntry.Text, student.Email);
+            Message(await 
+                _authService.ChangePassword(NewPasswordEntry.Text, student.Email, OldPasswordEntry.Text));
             return;
         }
         if (LoginViewModel.AccountVerification == false)
         {
-            MvvmHelper.Helper.DisplayMessage($"{faculty.FacultyEmail}");
-            await _authService.ChangePassword(NewPasswordEntry.Text, faculty.FacultyEmail);
+            Message(await
+              _authService.ChangePassword(NewPasswordEntry.Text, faculty.FacultyEmail, OldPasswordEntry.Text));
             return;
         }
         Close(true);
+    }
+
+    private void Message(bool result)
+    {
+        if (result)
+            MvvmHelper.Helper.DisplayMessage("Password changed successfully.");
+        else
+            MvvmHelper.Helper.DisplayMessage($"Password changed was not successful. {OldPasswordEntry.Text}");
     }
 }  

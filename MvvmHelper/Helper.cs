@@ -33,9 +33,9 @@ namespace UM_Consultation_App_MAUI.MvvmHelper
                         .GetName() ?? value.ToString();
         }
 
-        public static void DisplayMessage( string message)
+        public static void DisplayMessage(string message)
         {
-            App.Current.MainPage.DisplayAlert("Mobile Message", message, "Ok");
+            App.Current.MainPage.DisplayAlert("Display Message", message, "Ok");
         }
 
         public static List<string> StringSplitter(char splitter, string word)

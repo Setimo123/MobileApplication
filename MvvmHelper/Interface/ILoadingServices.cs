@@ -10,5 +10,7 @@ namespace UM_Consultation_App_MAUI.MvvmHelper.Interface
     {
         void Hide();
         void Show();
+
+        void NoInternet();
     }
 }

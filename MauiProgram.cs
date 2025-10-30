@@ -16,15 +16,12 @@ using Consultation.Services.Service.IService;
 using Consultation.Services.Service;
 using Consultation.Repository.Repository;
 using UM_Consultation_App_MAUI.Views;
-using Shiny;
-using Microsoft.Maui.Hosting;
-using Microsoft.Maui.Controls.Hosting;
-using Shiny.Infrastructure;
 using UM_Consultation_App_MAUI.MvvmHelper.Interface;
 using UM_Consultation_App_MAUI.MvvmHelper;
-using Microsoft.Extensions.DependencyInjection;
 using Consultation.App.Repository.IRepository;
 using Consultation.App.Repository;
+
+
 
 
 namespace UM_Consultation_App_MAUI
@@ -54,35 +51,42 @@ namespace UM_Consultation_App_MAUI
                 opt.UseMySql(cs, new MySqlServerVersion(new Version(8, 0, 36)), my =>
                 my.EnableRetryOnFailure(
                  maxRetryCount: 5,
-                    maxRetryDelay: TimeSpan.FromSeconds(10),
+                    maxRetryDelay: TimeSpan.FromSeconds(5),
                  errorNumbersToAdd: null));
             });
 
 
 
             //For services and repository
-            builder.Services.AddTransient<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddTransient<IStudentRepository, StudentRepository>();
-            builder.Services.AddTransient<IAuthService, AuthService>();
+            builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddTransient<IConsultationRequestRepository, ConsultationRequestRepository>();
             builder.Services.AddTransient<IConsultationRequestServices, ConsultationRequestServices>();
             builder.Services.AddTransient<IStudentServices, StudentServices>();
-            builder.Services.AddTransient<Consultation.Repository.Repository.IRepository.IFacultyRepository, FacultyRepository>();
+            builder.Services.AddScoped<Consultation.Repository.Repository.IRepository.IFacultyRepository, FacultyRepository>();
             builder.Services.AddTransient<Consultation.Services.Service.IService.IFacultyServices, FacultyServices>();
             builder.Services.AddTransient<ILoadingServices, LoadingServices>();
-            builder.Services.AddTransient<IActionRepository, ActionRepository>();
-            builder.Services.AddTransient<IActionServices, ActionServices>();
-            builder.Services.AddIdentityCore<Consultation.Domain.Users>()
-                          .AddRoles<IdentityRole>()
-                         .AddEntityFrameworkStores<AppDbContext>();
+            builder.Services.AddScoped<IActionRepository, ActionRepository>();
+            builder.Services.AddTransient<ActionServices, ActionServices>();   
 
-            builder.Services.AddIdentityCore<Users>() // Use your custom User class
-                .AddEntityFrameworkStores<AppDbContext>() // Use your DbContext
-                .AddDefaultTokenProviders();
 
             // Password Hasher
             builder.Services.AddSingleton<IPasswordHasher<Users>, PasswordHasher<Users>>();
-          
+
+            //Change Password Configuration
+            builder.Services.AddIdentityCore<Consultation.Domain.Users>()
+                 .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<AppDbContext>();
+
+            builder.Services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequiredLength = 3; 
+            });
+
 
             // ViewModels
             builder.Services.AddTransient<LoginViewModel>();
@@ -113,6 +117,7 @@ namespace UM_Consultation_App_MAUI
             builder.Services.AddTransient<RequestListPage>();
             builder.Services.AddTransient<ConsultationListPage>();
 
+           
 #if DEBUG
             builder.Logging.AddDebug();
 #endif

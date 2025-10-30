@@ -86,9 +86,23 @@ namespace UM_Consultation_App_MAUI.ViewModels
         public async void LogoutButton()
         {
             //navigate back to the log-in page
-            Application.Current.MainPage = new AppShell();
 
-            await Shell.Current.GoToAsync("//LoginPage");
+            bool option = await MvvmHelper.Helper.DisplayOption(
+                     $"Are you sure you want to log out?",
+                    "Log out",
+                     "Cancel");
+            if (option == true)
+            {
+                Application.Current.MainPage = new AppShell();
+
+                await Shell.Current.GoToAsync("//LoginPage");
+                return;
+            }
+            if (option == false)
+            {
+                return;
+            }
+         
 
         }
     }

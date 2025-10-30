@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using UM_Consultation_App_MAUI.MvvmHelper.Interface;
 
 namespace UM_Consultation_App_MAUI.ViewModels
 {
@@ -17,51 +18,62 @@ namespace UM_Consultation_App_MAUI.ViewModels
     {
         public ObservableCollection<RequestList> PendingRequests { get; set; } 
             = new ObservableCollection<RequestList>();
-        public ObservableCollection<RequestList> ConsultationsList { get; set; } 
-            = new ObservableCollection<RequestList>();
 
+        private readonly ILoadingServices _loadingServices;
 
         private readonly IFacultyRepository _faculty;
-        public FacultyRequestViewModel(IFacultyRepository faculty)
+        public FacultyRequestViewModel(IFacultyRepository faculty,ILoadingServices loadingServices)
         {
+            _loadingServices = loadingServices;
             _faculty = faculty;
-            DisplayConsultataion();
-        }
 
-
-        private async void DisplayConsultataion()
-        {
-            Faculty faculty = LoginViewModel.Faculty;
-            var facultyConsultation = await _faculty.FacultyConsultation(faculty.FacultyID);
-
-            var sortStatus = facultyConsultation.Where(fc =>
-             fc.Status == Consultation.Domain.Enum.Status.Pending).ToList();
-
-            if (faculty == null) return;
-            
-            if (sortStatus.Count == 0)
-            {
-                MvvmHelper.Helper.DisplayMessage("No Consultation Request");
-                return;
-            }
-
-            foreach (var i in sortStatus)
-            {
-                PendingRequests.Add(new RequestList(
-                    i.ConsultationID,
-                    i.SubjectCode,
-                    i.Student.StudentName,
-                    i.DateSchedule.ToString("MM/dd/yyyy"),
-                    $"{i.StartedTime} - {i.EndedTime}"
-                    ));
-            }
         }
 
         [RelayCommand]
-        private async Task ApproveRequest(Consultations selectedConsultation)
+        private async Task DisplayConsultataion()
+        {
+            try
+            {
+                _loadingServices.Show();
+                await Task.Delay(1000);
+                PendingRequests.Clear();
+                Faculty faculty = LoginViewModel.Faculty;
+                var facultyConsultation = await _faculty.FacultyConsultation(faculty.FacultyID);
+
+                var sortStatus = facultyConsultation.Where(fc =>
+                 fc.Status == Consultation.Domain.Enum.Status.Pending).ToList();
+
+                if (faculty == null) return;
+
+                if (sortStatus.Count == 0)
+                {
+                    MvvmHelper.Helper.DisplayMessage("No Consultation Request");
+                    return;
+                }
+
+                foreach (var i in sortStatus)
+                {
+                    PendingRequests.Add(new RequestList(
+                        i.ConsultationID,
+                        i.SubjectCode,
+                        i.Student.StudentName,
+                        i.DateSchedule.ToString("MM/dd/yyyy"),
+                        $"{i.StartedTime} - {i.EndedTime}"
+                        ));
+                }
+            }
+            finally
+            {
+                _loadingServices.Hide();
+            }
+         
+        }
+
+        [RelayCommand]
+        private async Task ApproveRequest(RequestList selected)
         {
             //Change the status of the request to approved
-            int id = int.Parse(selectedConsultation.Id); 
+            int id = selected.Id; 
             
             bool option = await MvvmHelper.Helper.DisplayOption(
                 $"Are you sure you want to approve this request?",
@@ -69,8 +81,8 @@ namespace UM_Consultation_App_MAUI.ViewModels
                 "No");
             if (option == true)
             {
-                await _faculty.ChangeConsultationByID(id,Consultation.Domain.Enum.Status.Approved,"");
-                PendingRequests.RemoveAt(id);
+                await _faculty.ChangeConsultationByID(id,Consultation.Domain.Enum.Status.Approved,"Approved");
+                PendingRequests.Remove(selected);
                 return;
             }
             if (option == false)
@@ -80,9 +92,9 @@ namespace UM_Consultation_App_MAUI.ViewModels
         }
 
         [RelayCommand]
-        private async Task DisApproveRequest(Consultations selectedConsultation)
+        private async Task DisApproveRequest(RequestList selected)
         {
-            int id = int.Parse(selectedConsultation.Id);
+            int id = selected.Id;
 
             bool option = await MvvmHelper.Helper.DisplayOption(
                 $"Are you sure you want to approve this request?",
@@ -96,8 +108,8 @@ namespace UM_Consultation_App_MAUI.ViewModels
                     "Ok",
                     "Cancel",
                     "Type reason here");
-                await _faculty.ChangeConsultationByID(id, Consultation.Domain.Enum.Status.Approved, reason);
-                PendingRequests.RemoveAt(id);
+                await _faculty.ChangeConsultationByID(id, Consultation.Domain.Enum.Status.Disapproved, reason);
+                PendingRequests.Remove(selected);
                 return;
             }
             if (option == false)

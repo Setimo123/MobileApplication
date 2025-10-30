@@ -40,27 +40,30 @@ namespace UM_Consultation_App_MAUI.ViewModels
             {
                 _loadingServices.Show();
                 await Task.Delay(1000);
+                Responses.Clear();
+                Options.Clear();
+                Options.Add("All");
                 var student = LoginViewModel.Student;
                
                 var list = await _studentServices.GetAllStudentConsultationRequests(student.StudentID);
-                //var s = await _studentServices.GetStudentEnrolledCourses(student.StudentID);
+                var s = await _studentServices.GetStudentEnrolledCourses(student.StudentID);
 
-                //foreach (var y in s.DistinctBy(sy => sy.SchoolYearID == student.SchoolYearID))
-                //{
-                //    if (y.SchoolYear.Semester != Consultation.Domain.Enum.Semester.Summer)
-                //    {
-                //        string ComboBoxFormat
-                //         = $"{Helper.GetSemesterName(y.SchoolYear.Semester)}" +
-                //            $" {y.SchoolYear.Year1} - {y.SchoolYear.Year2}";
-                //        Options.Add(ComboBoxFormat);
-                //    }
-                //}
-
+                foreach (var y in s.DistinctBy(sy => sy.SchoolYearID == student.SchoolYearID))
+                {
+                    if (y.SchoolYear.Semester != Consultation.Domain.Enum.Semester.Summer)
+                    {
+                        string ComboBoxFormat
+                         = $"{Helper.GetSemesterName(y.SchoolYear.Semester)}" +
+                            $" {y.SchoolYear.Year1} - {y.SchoolYear.Year2}";
+                        Options.Add(ComboBoxFormat);
+                    }
+                }
+               
                 foreach (var i in list)
                 {
                     Responses.Add(
-                        new Response(i.ConsultationID, i.SubjectCode, i.Student.StudentName, i.StartedTime.ToString()
-                        , i.EndedTime.ToString(), i.DateSchedule.ToString(), i.Status.ToString()));
+                        new Response(i.ConsultationID, i.SubjectCode, i.Faculty.FacultyName, i.StartedTime.ToString()
+                        ,i.EndedTime.ToString(), i.DateSchedule.ToString(), i.Status.ToString()));
                 }
             }
             finally

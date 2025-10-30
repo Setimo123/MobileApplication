@@ -12,7 +12,13 @@ namespace UM_Consultation_App_MAUI.MvvmHelper
 
     public class LoadingServices : ILoadingServices
     {
-        private Views.Common.LoadingScreen _popup;
+        private Views.Common.LoadingScreen _popup; 
+
+        public void NoInternet()
+        {
+            var _noInternet = new Views.Common.NoInternetPage();
+            Application.Current.MainPage.ShowPopup(_noInternet);
+        }
         public void Show()
         {
             _popup = new Views.Common.LoadingScreen();

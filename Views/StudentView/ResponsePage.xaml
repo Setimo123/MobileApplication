@@ -4,7 +4,7 @@
              xmlns:local="clr-namespace:UM_Consultation_App_MAUI.Views.StudentView" 
              xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
              x:Class="UM_Consultation_App_MAUI.Views.StudentView.ResponsePage"
-             Title="">
+             Title="Consultation Responses">
 
     <Page.Behaviors>
         <mct:StatusBarBehavior StatusBarColor="#8c221e" />
@@ -13,20 +13,45 @@
     <Grid RowDefinitions="Auto,*">
         <!-- Header + controls -->
         <VerticalStackLayout Grid.Row="0" Padding="20" Spacing="15">
-            <Label Text="Consultation Responses"
-                   FontSize="24" FontAttributes="Bold"
-                   TextColor="Black" HorizontalOptions="Center"/>
 
-            <Picker Title="All"
-                    ItemsSource="{Binding Options}"
-                    SelectedItem="{Binding SelectedSemster, Mode=TwoWay}"
-                    TitleColor="Black"
-                    BackgroundColor="#EFEFEF"
-                    FontAttributes="Bold"
-                    FontSize="18"
-                    WidthRequest="50"
-                    HeightRequest="50"
-                    HorizontalOptions="Center" />
+            <Frame 
+                CornerRadius="20"
+                BorderColor="GhostWhite"
+                Padding="0"
+                HeightRequest="50"
+                HasShadow="True"
+                BackgroundColor="GhostWhite">
+
+                <Grid ColumnSpacing="10" Padding="15,0">
+
+                    <Image 
+                        Source="filter_icon.png" 
+                        VerticalOptions="Center"
+                        WidthRequest="25"
+                        HeightRequest="25"
+                        Grid.Column="0" />
+
+                    <Picker Title="Semester"
+                            ItemsSource="{Binding Options}"
+                            SelectedItem="{Binding SelectedSemster, Mode=TwoWay}"
+                            TitleColor="Black"
+                            BackgroundColor="Transparent"
+                            FontAttributes="Bold"
+                            FontSize="18"
+                            HorizontalOptions="FillAndExpand"
+                            Grid.Column="1"/>
+
+
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                </Grid>
+
+            </Frame>
+
         </VerticalStackLayout>
         
         <CollectionView Grid.Row="1"

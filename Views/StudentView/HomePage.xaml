@@ -18,35 +18,35 @@
 
         <!-- User Information Section -->
         <Label Text="{Binding Umid}"    
-       FontSize="35"  
-       Margin="0,60,0,0"  
-       TextColor="#a9141d"  
-       HorizontalOptions="Center"  
-       FontAttributes="Bold"/>
+               FontSize="33"  
+               Margin="0,60,0,0"  
+               TextColor="#a9141d"  
+               HorizontalOptions="Center"  
+               FontAttributes="Bold"/>
 
         <Label Text="{Binding Studentname}"  
-      TextColor="Black"  
-       FontSize="28"  
-       HorizontalOptions="Center"  
-       FontAttributes="Bold"/>
+               TextColor="Black"  
+               FontSize="25"  
+               HorizontalOptions="Center"  
+               FontAttributes="Bold"/>
 
-        <Label Text="{Binding Useryearlevel}"  
-       TextColor="Black"
-       FontSize="20"  
-       HorizontalOptions="Center"  
-       FontAttributes="Bold"/>
+        <Label Text="{Binding Useryearlevel} "  
+               TextColor="Black"
+               FontSize="20"  
+               HorizontalOptions="Center"  
+               FontAttributes="Bold"/>
 
         <Label Text="{Binding Program}"  
-        TextColor="Black"
-        FontSize="20"  
-        HorizontalOptions="Center"  
-        FontAttributes="Bold"/>
+               TextColor="Black"
+               FontSize="20"  
+               HorizontalOptions="Center"  
+               FontAttributes="Bold"/>
 
         <Label Text="{Binding Schoolyear}" 
-       FontSize="20"  
-       TextColor="#f98800"  
-       HorizontalOptions="Center"  
-       FontAttributes="Bold"/>
+               FontSize="20"  
+               TextColor="#f98800"  
+               HorizontalOptions="Center"  
+               FontAttributes="Bold"/>
 
 
         <!-- Pending Consultations -->
@@ -76,35 +76,37 @@
                HasShadow="True"  
                WidthRequest="380"  
                HeightRequest="300"  
-               BorderColor="White">  
-                <VerticalStackLayout>  
+               BorderColor="White">
+            <ScrollView>
+                <VerticalStackLayout>
                     <Label Text="Notifications"  
                        FontSize="Medium"  
                        HorizontalOptions="Start"  
                        FontAttributes="Bold"  
-                       Margin="10,0,0,10" />  
+                       Margin="10,0,0,10" />
                     <Label FontSize="Medium"   
                        HorizontalOptions="Center"  
-                       Margin="10,0,0,0">  
-                        <Label.FormattedText>  
-                            <FormattedString>  
-                                <Span Text="Jay Al Gallenero " FontAttributes="Bold"/>  
-                                <Span Text="has approved your consultation request."/>  
-                            </FormattedString>  
-                        </Label.FormattedText>  
-                    </Label>  
+                       Margin="10,0,0,0">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Jay Al Gallenero " FontAttributes="Bold"/>
+                                <Span Text="has approved your consultation request."/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
                     <Label FontSize="Medium"   
                        HorizontalOptions="Center"  
-                       Margin="10,10,0,0">  
-                        <Label.FormattedText>  
-                            <FormattedString>  
-                                <Span Text="Jay Al Gallenero " FontAttributes="Bold" />  
-                                <Span Text="has disapproved your consultation request."/>  
-                            </FormattedString>  
-                        </Label.FormattedText>  
-                    </Label>  
-                </VerticalStackLayout>  
-            </Frame>  
+                       Margin="10,10,0,0">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Jay Al Gallenero " FontAttributes="Bold" />
+                                <Span Text="has disapproved your consultation request."/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </VerticalStackLayout>
+            </ScrollView>
+        </Frame>  
 
         </VerticalStackLayout>  
 </ContentPage>

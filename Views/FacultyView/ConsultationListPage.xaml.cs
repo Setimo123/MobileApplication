@@ -9,4 +9,11 @@ public partial class ConsultationListPage : ContentPage
 		InitializeComponent();
 		BindingContext = vm;
     }
+
+    protected override void OnNavigatedTo(NavigatedToEventArgs args)
+    {
+        base.OnNavigatedTo(args);
+        if (BindingContext is FacultyCLPViewModel vm)
+            vm.DisplayConsultationCommand.Execute(null);
+    }
 }
